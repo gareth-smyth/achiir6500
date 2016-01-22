@@ -24,12 +24,13 @@ namespace achiir6500.server_test
                 BaseAddress = new Uri(@"http://localhost:9858")
             };
 
-            // Add an Accept header for JSON format.
-//            client.DefaultRequestHeaders.Accept.Add(
-//                new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage response = client.GetAsync("/programs").Result;
+            String responseBody = response.Content.ReadAsStringAsync().Result;
             Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(responseBody, Contains.Substring(@"""loop_counter"": ""1"""));
         }
     }
 }
