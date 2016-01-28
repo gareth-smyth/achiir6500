@@ -7,15 +7,17 @@ import {Http} from 'angular2/http';
 })
 export class ControlStation {
     programs:string;
+    maxSteps:Number[];
 
     constructor(public http: Http) {
         this.http.get('http://localhost:9858/programs')
             .map(res => res.json())
             .subscribe(
-                data => this.programs = data,
+                data => this.programs = data.programs,
                 err => ControlStation.logError(err),
                 () => console.log('Random Quote Complete')
             );
+        this.maxSteps = new Array(8);
     }
 
     static logError(err) {

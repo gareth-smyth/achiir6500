@@ -16,43 +16,93 @@ namespace achiir6500.server_mock
                      { 
                         ""id"": ""0"",
                         ""loop_counter"": ""1"", // 1-200 
-                        ""steps"": { // max steps 8????????????????????
-                            ""step"": {
+                        ""steps"": [ // max steps 8????????????????????
+                            {
                                 ""ramp_rate"" : ""0.01"",
                                 ""target"": ""25"",
                                 ""dwell"": ""9999""
                             },
-                            ""step"": {
+                            {
                                 ""ramp_rate"" : ""99.99"",
                                 ""target"": ""30"",
                                 ""dwell"": ""9999""
                             },
-                            ""step"": {
+                            {
                                 ""ramp_rate"" : ""END"",
                                 ""target"": """",
                                 ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
                             }
-                        }
+                        ]
                     },
                     {
                         ""id"": 1,
-                        ""steps"": {
-                            ""step"": {
+                        ""steps"": [
+                            {
                                 ""ramp_rate"" : ""1"",
                                 ""target"": ""180"",
                                 ""dwell"": ""30""
                             },
-                            ""step"": {
+                            {
                                 ""ramp_rate"" : ""1"",
                                 ""target"": ""210"",
                                 ""dwell"": ""35""
                             },
-                            ""step"": {
+                            {
                                 ""ramp_rate"" : ""END"",
                                 ""target"": """",
                                 ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
+                            },
+                            {
+                                ""ramp_rate"" : """",
+                                ""target"": """",
+                                ""dwell"": """"
                             }
-                        }
+                        ]
                     }
                 ]
             }");

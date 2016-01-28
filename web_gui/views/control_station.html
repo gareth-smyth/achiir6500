@@ -3,7 +3,26 @@
 </div>
 <div class="container">
     <div class="content">
-        {{ programs | json}}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <template ngFor #step [ngForOf]="maxSteps">
+                    <td>Ramp</td>
+                    <td>Target</td>
+                    <td>Dwell</td>
+                </template>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="#program of programs">
+                <template ngFor #step [ngForOf]="program.steps">
+                    <td>{{step.ramp_rate}}</td>
+                    <td>{{step.target}}</td>
+                    <td>{{step.dwell}}</td>
+                </template>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="footer">
