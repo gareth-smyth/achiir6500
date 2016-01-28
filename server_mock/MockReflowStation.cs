@@ -5,9 +5,9 @@ using System.Text;
 using achiir6500.server;
 using Newtonsoft.Json.Linq;
 
-namespace achiir6500.server_test
+namespace achiir6500.server_mock
 {
-    class MockReflowStation : IReflowStation
+    public class MockReflowStation : IReflowStation
     {
         public JObject GetPrograms()
         {

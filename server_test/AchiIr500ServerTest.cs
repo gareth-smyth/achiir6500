@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using achiir6500.server;
 
-namespace achiir6500.server_test
+namespace achiir6500.server_mock
 {
     [TestFixture]
     public class AchiIr500ServerTest
