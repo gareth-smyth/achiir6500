@@ -10,11 +10,16 @@ using Nancy.TinyIoc;
 
 namespace achiir6500.server_mock
 {
-    public class TestNancyBootstraper: DefaultNancyBootstrapper
+    public class TestNancyBootstraper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IReflowStation, MockReflowStation>().AsSingleton();
+
+            pipelines.AfterRequest += (ctx) =>
+            {
+                ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            };
         }
     }
 }

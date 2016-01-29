@@ -231,3 +231,8 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+**/.idea
+**/*.iml
+**/node_modules
+**/build

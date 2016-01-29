@@ -1,0 +1,34 @@
+<div class="header">
+    Achi Ir 6500 Control Station
+</div>
+<div class="container">
+    <div class="content">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td style="white-space: nowrap">Program</td>
+                <td>Loop</td>
+                <template ngFor #step [ngForOf]="maxSteps">
+                    <td>Ramp</td>
+                    <td>Target</td>
+                    <td>Dwell</td>
+                </template>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="#program of programs">
+                <td style="white-space: nowrap">{{program.id}}</td>
+                <td>{{program.loop_counter}}</td>
+                <template ngFor #step [ngForOf]="program.steps">
+                    <td>{{step.ramp_rate}}</td>
+                    <td>{{step.target}}</td>
+                    <td>{{step.dwell}}</td>
+                </template>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="footer">
+    See <a href="https://github.com/gareth-smyth/achiir6500">AchiIr6500</a>
+</div>
