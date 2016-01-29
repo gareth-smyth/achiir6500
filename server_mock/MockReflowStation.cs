@@ -14,7 +14,7 @@ namespace achiir6500.server_mock
             return JObject.Parse(@"{
                 ""programs"": [
                      { 
-                        ""id"": ""0"",
+                        ""id"": ""Remove PS3 GPU"",
                         ""loop_counter"": ""1"", // 1-200 
                         ""steps"": [ // max steps 8????????????????????
                             {
@@ -60,7 +60,8 @@ namespace achiir6500.server_mock
                         ]
                     },
                     {
-                        ""id"": 1,
+                        ""id"": ""Reflow PS3 GPU"",
+                        ""loop_counter"": 2,
                         ""steps"": [
                             {
                                 ""ramp_rate"" : ""1"",
