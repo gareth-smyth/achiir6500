@@ -1,32 +1,48 @@
 <div class="header">
     Achi Ir 6500 Control Station
 </div>
-<div class="container">
+<div class="contain">
     <div class="content">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <td style="white-space: nowrap">Program</td>
-                <td>Loop</td>
+        <div class="data-table">
+            <div class="data-table--row">
+                <span class="data-table--row__status"></span>
+                <span class="data-table--row__program">Program</span>
+                <span class="data-table--row__loop">Loop</span>
                 <template ngFor #step [ngForOf]="maxSteps">
-                    <td>Ramp</td>
-                    <td>Target</td>
-                    <td>Dwell</td>
+                    <span class="data-table--row__column">Ramp</span>
+                    <span class="data-table--row__column">Target</span>
+                    <span class="data-table--row__column">Dwell</span>
                 </template>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="#program of programs">
-                <td style="white-space: nowrap">{{program.id}}</td>
-                <td>{{program.loop_counter}}</td>
-                <template ngFor #step [ngForOf]="program.steps">
-                    <td>{{step.ramp_rate}}</td>
-                    <td>{{step.target}}</td>
-                    <td>{{step.dwell}}</td>
-                </template>
-            </tr>
-            </tbody>
-        </table>
+            </div>
+            <div class="data-table__body" *ngFor="#program of programs">
+                <form #program="ngForm">
+                    <div class="data-table--row" ngControlGroup="programGroup" #programGroup="ngForm">
+                        <span class="data-table--row__status">
+                            <span [class.force-hidden]="programGroup.dirty" class="glyphicon glyphicon-floppy-saved"></span>
+                            <span [class.force-hidden]="!programGroup.dirty" class="glyphicon glyphicon-flash"></span>
+                        </span>
+                        <span class="data-table--row__program">
+                            <input type="text" required ngControl="name2" [(ngModel)]="program.id">
+                        </span>
+                        <span class="data-table--row__loop">
+                            <input type="text" required ngControl="name2" [(ngModel)]="program.loop_counter">
+                        </span>
+                        <template ngFor #step [ngForOf]="program.steps">
+                            <span class="data-table--row__column">
+                                <input type="text" ngControl="name2" [(ngModel)]="step.ramp_rate">
+                            </span>
+                            <span class="data-table--row__column">
+                                <input type="text" ngControl="name2" [(ngModel)]="step.target">
+                            </span>
+                            <span class="data-table--row__column">
+                                <input type="text" ngControl="name2" [(ngModel)]="step.dwell">
+                            </span>
+                        </template>
+                    </div>
+                </form>
+            </div>
+            <button class="btn" (click)="addProgram(input, $event)">Add Program</button>
+        </div>
     </div>
 </div>
 <div class="footer">

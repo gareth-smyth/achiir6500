@@ -1,0 +1,39 @@
+.data-table {
+
+}
+
+.data-table__body {
+    clear:both;
+    white-space:nowrap;
+}
+
+.data-table--row {
+    clear:both;
+    white-space:nowrap;
+    text-align:center;
+    display: inline-block;
+    width:6em;
+}
+
+span.data-table--row__status {
+    display: inherit;
+    white-space: inherit;
+    width:2.5em;
+}
+
+span.data-table--row__program {
+    display: inherit;
+    white-space: inherit;
+    width:14em;
+    text-align: left;
+}
+
+span.data-table--row__loop {
+    display: inherit;
+    width:3em;
+}
+
+span.data-table--row__column {
+    display: inherit;
+    width: inherit;
+}
