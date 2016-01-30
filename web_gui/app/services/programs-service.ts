@@ -1,6 +1,7 @@
 import {Http} from 'angular2/http';
 import {EventEmitter} from 'angular2/core';
 import {Injectable} from 'angular2/core';
+import {Program} from "../data/program";
 
 @Injectable()
 export class ProgramsService {

@@ -1,6 +1,7 @@
 import {Component} from "angular2/core";
 import {ProgramsService} from "./../services/programs-service";
 import { FORM_DIRECTIVES, CORE_DIRECTIVES } from 'angular2/common';
+import {Program} from "../data/program";
 
 @Component({
     selector: "control-station",
@@ -17,6 +18,10 @@ export class ControlStation {
         });
         programsService.getPrograms();
         this.maxSteps = new Array(8);
+    }
+
+    public addProgram(input, $event) {
+        this.programs.push(new Program())
     }
 
     public valueChanged(event){
