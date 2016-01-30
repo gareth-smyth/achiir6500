@@ -21,8 +21,9 @@
                             <span [class.force-hidden]="programGroup.dirty" class="glyphicon glyphicon-floppy-saved"></span>
                             <span [class.force-hidden]="!programGroup.dirty" class="glyphicon glyphicon-flash"></span>
                         </span>
+                        <input type="hidden" required ngControl="name2" [(ngModel)]="program.id">
                         <span class="data-table--row__program">
-                            <input type="text" required ngControl="name2" [(ngModel)]="program.id">
+                            <input type="text" required ngControl="name2" [(ngModel)]="program.name">
                         </span>
                         <span class="data-table--row__loop">
                             <input type="text" required ngControl="name2" [(ngModel)]="program.loop_counter">
