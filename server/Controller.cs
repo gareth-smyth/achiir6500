@@ -8,9 +8,9 @@ namespace achiir6500.server
 {
     public class Controller : NancyModule
     {
-        public Controller(IReflowStation reflowStation)
+        public Controller(IReflowStation reflowStation, IProgramStorage programStorage)
         {
-            Get["/programs"] = _ => reflowStation.GetPrograms().ToString();
+            Get["/programs"] = _ => programStorage.GetPrograms().ToString();
         }
     }
 }

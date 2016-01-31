@@ -41,7 +41,7 @@ export class ProgramsService {
     };
 
     private updateFromServer(data) {
-        this.programs = <Program[]>data['programs'];
+        this.programs = <Program[]>data;
         this.originalPrograms = <Program[]>JSON.parse(JSON.stringify(this.programs));
         this.rxEmitter.next(this.programs);
     };

@@ -17,7 +17,7 @@ namespace achiir6500.server_test
         }
 
         [Test]
-        public void ShouldGetSuccessResponse()
+        public void ShouldGetSuccessResponseWithContent()
         {
             HttpClient client = new HttpClient
             {
@@ -30,7 +30,8 @@ namespace achiir6500.server_test
             HttpResponseMessage response = client.GetAsync("/programs").Result;
             String responseBody = response.Content.ReadAsStringAsync().Result;
             Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(responseBody, Contains.Substring(@"""loop_counter"": ""1"""));
+            Assert.That(responseBody, Contains.Substring(@"""loop_counter"": 1"));
+            Assert.That(responseBody, Contains.Substring(@"""dwell"": 35"));
         }
     }
 }

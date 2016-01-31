@@ -15,6 +15,7 @@ namespace achiir6500.server_mock
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IReflowStation, MockReflowStation>().AsSingleton();
+            container.Register<IProgramStorage, InMemoryProgramStorage>().AsSingleton();
         }
     }
 }
