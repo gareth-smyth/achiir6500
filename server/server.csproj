@@ -59,8 +59,8 @@
     <Compile Include="InMemoryProgramStorage.cs" />
     <Compile Include="IProgramStorage.cs" />
     <Compile Include="IReflowStation.cs" />
-    <Compile Include="PC900Program.cs" />
-    <Compile Include="PC900ProgramStep.cs" />
+    <Compile Include="Pc900Program.cs" />
+    <Compile Include="Pc900ProgramStep.cs" />
     <Compile Include="ReflowStation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

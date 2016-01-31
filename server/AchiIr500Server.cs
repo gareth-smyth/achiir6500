@@ -19,6 +19,11 @@ namespace achiir6500.server{
         {
             host.Start();
         }
+
+        public void Stop()
+        {
+            host.Stop();
+        }
    
     }
 }

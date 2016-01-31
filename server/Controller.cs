@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nancy;
+using Nancy.ModelBinding;
 
 namespace achiir6500.server
 {
@@ -11,6 +12,11 @@ namespace achiir6500.server
         public Controller(IReflowStation reflowStation, IProgramStorage programStorage)
         {
             Get["/programs"] = _ => programStorage.GetPrograms().ToString();
+            Post["/programs"] = _ =>
+            {
+                programStorage.UpdatePrograms(this.Bind<Pc900Program[]>());
+                return @"{""status"":""OK""}";
+            };
         }
     }
 }

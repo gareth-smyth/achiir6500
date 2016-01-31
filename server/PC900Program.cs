@@ -1,13 +1,13 @@
 ﻿namespace achiir6500.server
 {
-    internal class PC900Program
+    public class Pc900Program
     {
-        public Pc900ProgramStep[] steps;
         public string id;
         public string name;
         public int loop_counter;
+        public Pc900ProgramStep[] steps;
 
-        public PC900Program()
+        public Pc900Program()
         {
             this.steps = new Pc900ProgramStep[10];
             for (int i = 0; i < 10; i++)
@@ -16,7 +16,7 @@
             }
         }
 
-        public PC900Program(string id, string name, int loopCounter, Pc900ProgramStep[] programSteps)
+        public Pc900Program(string id, string name, int loopCounter, Pc900ProgramStep[] programSteps)
         {
             this.id = id;
             this.name = name;
