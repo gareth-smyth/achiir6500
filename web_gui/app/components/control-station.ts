@@ -12,7 +12,7 @@ export class ControlStation {
     programs:Program[];
     maxSteps:Number[];
 
-    constructor(programsService: ProgramsService) {
+    constructor(public programsService: ProgramsService) {
         programsService.rxEmitter.subscribe((programs) => {
            this.programs = programs;
         });
@@ -22,6 +22,10 @@ export class ControlStation {
 
     public addProgram(input, $event) {
         this.programs.push(new Program())
+    }
+
+    public save(input, $event){
+        this.programsService.save();
     }
 
     public valueChanged(event){

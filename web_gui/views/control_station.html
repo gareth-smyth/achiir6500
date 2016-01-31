@@ -5,7 +5,6 @@
     <div class="content">
         <div class="data-table">
             <div class="data-table--row">
-                <span class="data-table--row__status"></span>
                 <span class="data-table--row__program">Program</span>
                 <span class="data-table--row__loop">Loop</span>
                 <template ngFor #step [ngForOf]="maxSteps">
@@ -17,10 +16,6 @@
             <div class="data-table__body" *ngFor="#program of programs">
                 <form #program="ngForm">
                     <div class="data-table--row" ngControlGroup="programGroup" #programGroup="ngForm">
-                        <span class="data-table--row__status">
-                            <span [class.force-hidden]="programGroup.dirty" class="glyphicon glyphicon-floppy-saved"></span>
-                            <span [class.force-hidden]="!programGroup.dirty" class="glyphicon glyphicon-flash"></span>
-                        </span>
                         <input type="hidden" required ngControl="name2" [(ngModel)]="program.id">
                         <span class="data-table--row__program">
                             <input type="text" required ngControl="name2" [(ngModel)]="program.name">
@@ -43,6 +38,7 @@
                 </form>
             </div>
             <button class="btn" (click)="addProgram(input, $event)">Add Program</button>
+            <button class="btn" (click)="save(input, $event)">Save All</button>
         </div>
     </div>
 </div>

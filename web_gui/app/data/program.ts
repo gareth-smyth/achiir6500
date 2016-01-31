@@ -1,13 +1,13 @@
-class Step {
-    ramp_rate: number;
-    target: number;
-    dwell: number;
+export class Step {
+    ramp_rate: number = null;
+    target: number = null;
+    dwell: number = null;
 }
 
 export class Program {
-    id: string;
-    name: string;
-    loop_counter: number;
+    id: string = "";
+    name: string = "";
+    loop_counter: number = 1;
     steps: Step[] = [];
 
     constructor() {
