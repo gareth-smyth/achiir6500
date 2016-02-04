@@ -15,10 +15,10 @@
     width:6em;
 }
 
-span.data-table--row__status {
+span.data-table--row__action {
     display: inherit;
     white-space: inherit;
-    width:2.5em;
+    width:5em;
 }
 
 span.data-table--row__program {

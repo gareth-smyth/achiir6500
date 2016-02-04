@@ -5,6 +5,7 @@
     <div class="content">
         <div class="data-table">
             <div class="data-table--row">
+                <span class="data-table--row__action">&nbsp;</span>
                 <span class="data-table--row__program">Program</span>
                 <span class="data-table--row__loop">Loop</span>
                 <template ngFor #step [ngForOf]="maxSteps">
@@ -16,6 +17,9 @@
             <div class="data-table__body" *ngFor="#program of programs">
                 <form #program="ngForm">
                     <div class="data-table--row" ngControlGroup="programGroup" #programGroup="ngForm">
+                        <span class="data-table--row__action">
+                            <button class="btn" (click)="runProgram(program.id, $event)"><span class="glyphicon glyphicon-play"></span> Run</button>
+                        </span>
                         <input type="hidden" required ngControl="name2" [(ngModel)]="program.id">
                         <span class="data-table--row__program">
                             <input type="text" required ngControl="name2" [(ngModel)]="program.name">

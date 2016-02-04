@@ -28,7 +28,7 @@ export class ControlStation {
         this.programsService.save();
     }
 
-    public valueChanged(event){
-        console.log(event);
+    public runProgram(programId, $event){
+        this.programsService.run(programId);
     }
 }

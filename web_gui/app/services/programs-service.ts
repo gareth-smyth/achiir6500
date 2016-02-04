@@ -2,6 +2,7 @@ import {Http} from 'angular2/http';
 import {EventEmitter} from 'angular2/core';
 import {Injectable} from 'angular2/core';
 import {Program, Step} from "../data/program";
+import 'rxjs/operator/map'
 
 @Injectable()
 export class ProgramsService {
@@ -23,7 +24,7 @@ export class ProgramsService {
             );
     }
 
-    save() {
+    public save() {
         var dirtyPrograms:Program[] = this.gatherDirtyPrograms(this.programs);
         if(dirtyPrograms.length>0){
             this.http.post('http://localhost:9858/programs', JSON.stringify(dirtyPrograms))
@@ -35,12 +36,21 @@ export class ProgramsService {
         }
     }
 
+    public run(programId:string):void {
+        this.http.post('http://localhost:9858/runs/'+programId, '').map(res => res.json())
+            .subscribe(
+                data => console.log("ran program "+programId),
+                err => ProgramsService.logError(err)
+            );
+    }
+
     private saved() {
         this.originalPrograms = <Program[]>JSON.parse(JSON.stringify(this.programs));
         console.log('Saved');
     };
 
     private updateFromServer(data) {
+        console.log('Updating data from server');
         this.programs = <Program[]>data;
         this.originalPrograms = <Program[]>JSON.parse(JSON.stringify(this.programs));
         this.rxEmitter.next(this.programs);

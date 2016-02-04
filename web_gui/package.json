@@ -2,9 +2,9 @@
   "name": "json_edit",
   "version": "0.1.0",
   "scripts": {
-    "build-test": "tsc -p specs -w",
-    "test": "karma start",
-    "test-start": "concurrent \"npm run build-test\" \"npm run test\"",
+    "build-test": "tsc -p specs",
+    "karma": "karma start --single-run",
+    "test": "npm run build-test && npm run karma",
     "build": "tsc",
     "build-watch": "tsc -w",
     "lite": "lite-server --files '/**/*.html' '/**/*.css' '/**/*.js' '/**/*.json'",
@@ -18,7 +18,8 @@
     "es6-shim": "^0.33.3",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.10"
+    "zone.js": "0.5.10",
+    "typescript": "1.7.5"
   },
   "devDependencies": {
     "concurrently": "^1.0.0",
