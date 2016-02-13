@@ -37,7 +37,7 @@ export class ProgramsService {
     }
 
     public run(programId:string):void {
-        this.http.post('http://localhost:9858/runs/'+programId, '').map(res => res.json())
+        this.http.post('http://localhost:9858/start-program/'+programId, '').map(res => res.json())
             .subscribe(
                 data => console.log("ran program "+programId),
                 err => ProgramsService.logError(err)

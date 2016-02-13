@@ -9,9 +9,9 @@ namespace achiir6500.server_mock
 {
     public class MockReflowStation : IReflowStation
     {
-        public JObject GetPrograms()
+        public Pc900ProgramRun start(Pc900Program program)
         {
-            throw new NotImplementedException();
+            return new Pc900ProgramRun(program.id);
         }
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="InMemoryProgramStorage.cs" />
     <Compile Include="IProgramStorage.cs" />
     <Compile Include="IReflowStation.cs" />
+    <Compile Include="Pc900ProgramRun.cs" />
     <Compile Include="Pc900Program.cs" />
     <Compile Include="Pc900ProgramStep.cs" />
     <Compile Include="ReflowStation.cs" />

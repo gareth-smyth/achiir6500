@@ -76,5 +76,21 @@ namespace achiir6500.server_test
             Assert.That(response.IsSuccessStatusCode, Is.True);
             Assert.That(responseBody, Contains.Substring(@"""loop_counter"": 85"));
         }
+
+        [Test]
+        public void ShouldStartProgram()
+        {
+            Pc900ProgramStep[] steps = new Pc900ProgramStep[1];
+            steps[0] = new Pc900ProgramStep(10, 20, 40);
+            Pc900Program pc900Program = new Pc900Program("new_id", "new name", 85, steps);
+            Pc900Program[] programs = new Pc900Program[] { pc900Program };
+            _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json"));
+
+            HttpResponseMessage response = _client.PostAsync("/start-program/new_id", new StringContent("")).Result;
+            String responseBody = response.Content.ReadAsStringAsync().Result;
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(responseBody, Contains.Substring(@"""program_id"": ""new_id"""));
+            Assert.That(responseBody, Contains.Substring(@"""id"": "));
+        }
     }
 }

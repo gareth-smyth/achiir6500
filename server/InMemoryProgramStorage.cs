@@ -25,9 +25,9 @@ namespace achiir6500.server
             _programs.Add(new Pc900Program("iamaguid_2", "Reflow PS3 GPU", 2, program1Steps));
         }
 
-        public JArray GetPrograms()
+        public List<Pc900Program> GetPrograms()
         {
-            return JArray.FromObject(_programs);
+            return _programs;
         }
 
         public void UpdatePrograms(Pc900Program[] pc900Programs)
@@ -46,6 +46,18 @@ namespace achiir6500.server
                     _programs.Add(updatedProgram);
                 }
             }
+        }
+
+        public Pc900Program GetProgram(string programId)
+        {
+            foreach (Pc900Program pc900Program in _programs)
+            {
+                if (pc900Program.id.Equals(programId))
+                {
+                    return pc900Program;
+                }
+            }
+            return null;
         }
     }
 }
