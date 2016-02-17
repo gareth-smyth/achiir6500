@@ -10,7 +10,7 @@ namespace achiir6500.server_mock
     {
         static void Main(string[] args)
         {
-            new AchiIr500Server().Start();
+            new AchiIr500Server(new TestNancyBootstraper()).Start();
             Console.ReadLine();
         }
     }

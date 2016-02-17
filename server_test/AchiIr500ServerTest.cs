@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using achiir6500.server;
+using achiir6500.server_mock;
 
 namespace achiir6500.server_test
 {
@@ -23,7 +24,7 @@ namespace achiir6500.server_test
             };
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            _achiIr500Server = new AchiIr500Server();
+            _achiIr500Server = new AchiIr500Server(new TestNancyBootstraper());
             _achiIr500Server.Start();
         }
 
