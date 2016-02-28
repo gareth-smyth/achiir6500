@@ -11,6 +11,7 @@
     <AssemblyName>server</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,12 +63,16 @@
     <Compile Include="Pc900ProgramRun.cs" />
     <Compile Include="Pc900Program.cs" />
     <Compile Include="Pc900ProgramStep.cs" />
+    <Compile Include="Pc900Translator.cs" />
     <Compile Include="ReflowStation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NancyBootstraper.cs" />
+    <Compile Include="MyNancyBootstraper.cs" />
+    <Compile Include="StartCommand.cs" />
+    <Compile Include="StartCommandResponse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

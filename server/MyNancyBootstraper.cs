@@ -9,7 +9,7 @@ using Nancy.TinyIoc;
 
 namespace achiir6500.server
 {
-    public class NancyBootstraper : DefaultNancyBootstrapper
+    public class MyNancyBootstraper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
