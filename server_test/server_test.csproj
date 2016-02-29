@@ -96,7 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchiIr500ServerTest.cs" />
-    <Compile Include="Pc900TranslatorTest.cs" />
+    <Compile Include="Pc900TranslateStartTest - Copy.cs" />
+    <Compile Include="Pc900TranslateLoadTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

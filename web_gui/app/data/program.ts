@@ -1,6 +1,6 @@
 export class Step {
-    ramp_rate: number = null;
-    target: number = null;
+    ramp: number = null;
+    level: number = null;
     dwell: number = null;
 }
 

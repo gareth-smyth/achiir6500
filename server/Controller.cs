@@ -18,10 +18,10 @@ namespace achiir6500.server
                 programStorage.UpdatePrograms(this.Bind<Pc900Program[]>());
                 return @"{""status"":""OK""}";
             };
-            Post["start-program/{programId}"] = path =>
+            Post["Start-program/{programId}"] = path =>
             {
                 Pc900Program program = programStorage.GetProgram(path.programId.Value);
-                return JObject.FromObject(reflowStation.start(program)).ToString();
+                return JObject.FromObject(reflowStation.Start(program)).ToString();
             };
         }
     }

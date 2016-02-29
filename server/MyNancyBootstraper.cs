@@ -16,7 +16,7 @@ namespace achiir6500.server
             container.Register<IReflowStation, ReflowStation>().AsSingleton();
             container.Register<IProgramStorage, InMemoryProgramStorage>().AsSingleton();
 
-            pipelines.AfterRequest += (ctx) =>
+            pipelines.AfterRequest += ctx =>
             {
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             };

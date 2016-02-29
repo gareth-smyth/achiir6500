@@ -10,7 +10,7 @@
                 <span class="data-table--row__loop">Loop</span>
                 <template ngFor #step [ngForOf]="maxSteps">
                     <span class="data-table--row__column">Ramp</span>
-                    <span class="data-table--row__column">Target</span>
+                    <span class="data-table--row__column">level</span>
                     <span class="data-table--row__column">Dwell</span>
                 </template>
             </div>
@@ -29,10 +29,10 @@
                         </span>
                         <template ngFor #step [ngForOf]="program.steps">
                             <span class="data-table--row__column">
-                                <input type="text" ngControl="name2" [(ngModel)]="step.ramp_rate">
+                                <input type="text" ngControl="name2" [(ngModel)]="step.ramp">
                             </span>
                             <span class="data-table--row__column">
-                                <input type="text" ngControl="name2" [(ngModel)]="step.target">
+                                <input type="text" ngControl="name2" [(ngModel)]="step.level">
                             </span>
                             <span class="data-table--row__column">
                                 <input type="text" ngControl="name2" [(ngModel)]="step.dwell">

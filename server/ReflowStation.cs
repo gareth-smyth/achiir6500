@@ -1,50 +1,72 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using Newtonsoft.Json.Linq;
 
 namespace achiir6500.server
 {
     public class ReflowStation: IReflowStation
     {
-        public Pc900ProgramRun start(Pc900Program program)
+        public Pc900ProgramRun Start(Pc900Program program)
         {
-            System.IO.Ports.SerialPort myPort = new System.IO.Ports.SerialPort("COM1");
-            myPort.BaudRate = 9600;
-            myPort.DtrEnable = true;
-            myPort.RtsEnable = true;
-            myPort.ReadBufferSize = 8;
-            myPort.DataBits = 7;
-            myPort.Parity = Parity.Even;
-            myPort.StopBits = StopBits.One;
-
-            if (myPort.IsOpen == false) 
-                myPort.Open();
-
+            LoadRun(program);
+            var port = CreateAndOpenPort();
             var pc900Translator = new Pc900Translator();
 
-            Console.WriteLine("Sending start command");
-            var startCommand = pc900Translator.StartCommand("1");
-            foreach (var command in startCommand.CommandsList)
-            {
-                byte[] buffer = command.ToArray();
-                
-                myPort.Write(buffer, 0, buffer.Length);
-                Console.WriteLine("Sent:" + string.Join(", ", buffer));
-                Console.WriteLine("Receiving bytes");
-                int bytes = myPort.BytesToRead;
-                Console.WriteLine("Receiving bytes:"+bytes);
-                byte[] readBuffer = new byte[bytes];
-                myPort.Read(readBuffer, 0, bytes);
-                startCommand.ResponseDelegate(readBuffer.ToList());
-            }
+            Console.WriteLine("Sending Start command");
+            var command = pc900Translator.StartCommand(program.id);
+            ExecuteCommand(command, port);
             
-            myPort.Close();
+            port.Close();
 
             return new Pc900ProgramRun("1234");
+        }
+
+        public void LoadRun(Pc900Program program)
+        {
+            var port = CreateAndOpenPort();
+            var pc900Translator = new Pc900Translator();
+
+            Console.WriteLine("Sending Load commands");
+            var command = pc900Translator.LoadCommand(program);
+            ExecuteCommand(command, port);
+
+            port.Close();
+        }
+
+        private static void ExecuteCommand(Pc900Command command, SerialPort myPort)
+        {
+            foreach (var buffer in command.CommandsList.Select(byteList => byteList.ToArray()))
+            {
+                myPort.Write(buffer, 0, buffer.Length);
+                var readBuffer = ReadBuffer(buffer, myPort);
+                command.ResponseDelegate(readBuffer.ToList());
+            }
+        }
+
+        private static SerialPort CreateAndOpenPort()
+        {
+            var myPort = new SerialPort("COM1")
+            {
+                BaudRate = 9600,
+                DtrEnable = true,
+                RtsEnable = true,
+                DataBits = 7,
+                Parity = Parity.Even,
+                StopBits = StopBits.One
+            };
+
+            if (myPort.IsOpen == false)
+                myPort.Open();
+            return myPort;
+        }
+
+        private static byte[] ReadBuffer(byte[] buffer, SerialPort myPort)
+        {
+            Console.WriteLine("Sent:" + string.Join(", ", buffer));
+            var readBuffer = new byte[1];
+            myPort.Read(readBuffer, 0, 1);
+            Console.WriteLine(readBuffer[0]);
+            return readBuffer;
         }
     }
 }

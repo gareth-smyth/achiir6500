@@ -4,6 +4,6 @@ namespace achiir6500.server
 {
     public interface IReflowStation
     {
-        Pc900ProgramRun start(Pc900Program program);
+        Pc900ProgramRun Start(Pc900Program program);
     }
 }

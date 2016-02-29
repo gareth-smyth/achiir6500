@@ -9,7 +9,7 @@ namespace achiir6500.server_mock
 {
     public class MockReflowStation : IReflowStation
     {
-        public Pc900ProgramRun start(Pc900Program program)
+        public Pc900ProgramRun Start(Pc900Program program)
         {
             return new Pc900ProgramRun(program.id);
         }

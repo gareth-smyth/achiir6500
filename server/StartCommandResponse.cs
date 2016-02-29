@@ -2,7 +2,7 @@
 
 namespace achiir6500.server
 {
-    public class StartCommandResponse
+    public class StartCommandResponse : CommandResponse
     {
         public Pc900ProgramRun Pc900ProgramRun { get; }
         public bool Succeeded { get; }

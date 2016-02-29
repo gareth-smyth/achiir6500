@@ -87,8 +87,8 @@ export class ProgramsService {
 
     private static stepDirty(step1:Step, step2:Step):boolean {
         return step1.dwell != step2.dwell ||
-                step1.ramp_rate != step2.ramp_rate ||
-                step1.target != step2.target;
+                step1.ramp != step2.ramp ||
+                step1.level != step2.level;
     }
 
     private static findProgram(programs:Program[], id:string):Program {
