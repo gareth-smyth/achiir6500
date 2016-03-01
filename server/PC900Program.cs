@@ -9,8 +9,8 @@
 
         public Pc900Program()
         {
-            this.steps = new Pc900ProgramStep[10];
-            for (int i = 0; i < 10; i++)
+            this.steps = new Pc900ProgramStep[8];
+            for (int i = 0; i < this.steps.Length; i++)
             {
                 steps[i] = new Pc900ProgramStep();
             }
@@ -21,8 +21,8 @@
             this.id = id;
             this.name = name;
             this.loop_counter = loopCounter;
-            this.steps = new Pc900ProgramStep[10];
-            for (int i = 0; i < 10; i++)
+            this.steps = new Pc900ProgramStep[8];
+            for (int i = 0; i < steps.Length; i++)
             {
                 if (i < programSteps.Length)
                 {

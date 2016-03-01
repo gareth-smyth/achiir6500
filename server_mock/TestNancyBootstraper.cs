@@ -20,6 +20,7 @@ namespace achiir6500.server_mock
             pipelines.AfterRequest += (ctx) =>
             {
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                ctx.Response.Headers.Add("Access-Control-Allow-Methods", "POST,GET");
             };
         }
     }
