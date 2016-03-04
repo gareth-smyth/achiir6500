@@ -6,7 +6,7 @@ import {Program} from "../data/program";
 @Component({
     selector: "control-station",
     directives: [FORM_DIRECTIVES, CORE_DIRECTIVES],
-    templateUrl: '../views/control_station.html'
+    templateUrl: './views/control_station.html'
 })
 export class ControlStation {
     programs:Program[];
