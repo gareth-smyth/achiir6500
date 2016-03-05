@@ -117,8 +117,6 @@ echo copy package.json  $(TargetDir)content\
 copy package.json $(TargetDir)content\
 echo copying content
 xcopy /E /R /Y build $(TargetDir)content\build\
-xcopy /E /R /Y css $(TargetDir)content\css\
-xcopy /E /R /Y views $(TargetDir)content\views\
 copy index.html $(TargetDir)content\index.html
 echo install production modules
 npm install --production --prefix $(TargetDir)content\

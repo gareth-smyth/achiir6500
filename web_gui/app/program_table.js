@@ -111,7 +111,6 @@ module.exports = React.createClass({
                 rowsCount={this.getSize()}
                 minHeight={200}
                 maxHeight={200}
-                minWidth={1000}
                 enableRowSelect='single'
                 onRowSelect={this.onRowSelect}/>
         </div>);
