@@ -1,5 +1,5 @@
 var React = require('react');
-var ReactDataGrid = require('react-data-grid');
+var ReactDataGrid = require('react-data-grid/addons');
 var ProgramService = require('./program_service');
 
 var ProgramTableToolbar = React.createClass({
@@ -77,6 +77,12 @@ module.exports = React.createClass({
         ProgramService.saveProgram(program);
     },
 
+    handleRowUpdated : function(e){
+        var rows = this.state.rows;
+        Object.assign(rows[e.rowIdx], e.updated);
+        this.setState({rows: rows, selected_row: this.state.selected_row});
+    },
+
     render: function () {
         var step_headings = ["Ramp", "Level", "Dwell"];
         var columns = [
@@ -85,17 +91,19 @@ module.exports = React.createClass({
                 name: 'Program',
                 width: 210,
                 fixed: true,
-                locked: true
+                locked: true,
+                editable : true
             },
             {
                 key: 'loop_counter',
                 name: 'Loop',
-                width: 60
+                width: 60,
+                editable : true
             }
         ];
         for (var step_num = 1; step_num < 9; step_num++) {
             step_headings.map(function (step_part) {
-                columns.push({key: step_part + step_num, name: step_part, width: 60});
+                columns.push({key: step_part + step_num, name: step_part, width: 60, editable:true});
             });
         }
 
@@ -112,7 +120,9 @@ module.exports = React.createClass({
                 minHeight={200}
                 maxHeight={200}
                 enableRowSelect='single'
-                onRowSelect={this.onRowSelect}/>
+                enableCellSelect={true}
+                onRowSelect={this.onRowSelect}
+                onRowUpdated={this.handleRowUpdated} />
         </div>);
     }
 });

@@ -23,7 +23,7 @@ module.exports = class ProgramService{
     }
 
     static saveProgram(program){
-        return fetch('http://localhost:9858/programs', {method: 'POST', body:[program]}).then(function (response) {
+        return fetch('http://localhost:9858/programs', {method: 'POST', body:JSON.stringify([program])}).then(function (response) {
             if (response.status == 200) {
                 console.log("Saved program:" + JSON.stringify(program));
             } else {
