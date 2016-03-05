@@ -1,34 +1,15 @@
+<!DOCTYPE html>
 <html>
-
 <head>
-    <title>Achi Ir 6500 Control Station</title>
-
-    <link href="css/style.css" rel="stylesheet"/>
-    <link href="css/program-table.css" rel="stylesheet"/>
-    <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
-    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
-    <script src="node_modules/rxjs/bundles/Rx.js"></script>
-    <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
-    <script src="node_modules/angular2/bundles/http.dev.js"></script>
-
-    <script>
-        System.config({
-            packages: {
-                build: {
-                    format: 'register',
-                    defaultExtension: 'js'
-                }
-            }
-        });
-        System.import('build/boot')
-                .then(null, console.error.bind(console));
-    </script>
-
+    <meta charset="UTF-8"/>
+    <title>Achi Ir 6500 Controller</title>
+    <link href="app/css/style.css" rel="stylesheet"/>
+    <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
 </head>
-
 <body>
-   <control-station>Loading...</control-station>
+<div id="control-station"></div>
+<script type="text/babel" src="build/bundle.js"></script>
 </body>
-
 </html>
