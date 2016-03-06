@@ -1,19 +1,19 @@
 var React = require('react');
 var ReactDataGrid = require('react-data-grid/addons');
 var ProgramService = require('./program_service');
+var uuid = require('uuid');
 
 var ProgramTableToolbar = React.createClass({
     render: function () {
         return <div>
             <input className={"btn"} type="button" onClick={this.props.onRun} value="Run Program"/>
             <input className={"btn"} type="button" disabled={!this.props.saveSelectedReady}
-                   onClick={this.props.onSaveSelected}
-                   value="Save Selected"/> - <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
-                   onClick={this.props.onSaveAll}
-                   value="Save All"/>
+                   onClick={this.props.onSaveSelected} value="Save Selected"/>
+            <input className={"btn"} type="button" onClick={this.props.onAddProgram} value="Add Program"/>- -
             <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
-                   onClick={this.props.onReset}
-                   value="Reset All"/>
+                   onClick={this.props.onSaveAll} value="Save All"/>
+            <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
+                   onClick={this.props.onReset} value="Reset All"/>
         </div>
     }
 });
@@ -29,8 +29,10 @@ module.exports = React.createClass({
         var saveAllReady = newRows.find((row)=> row.dirty == true) ? true : false;
         var saveSelectedReady = newSelectedRow && newSelectedRow.dirty;
 
-        this.setState({rows: newRows, selectedRow: newSelectedRow,
-            saveAllReady: saveAllReady, saveSelectedReady: saveSelectedReady});
+        this.setState({
+            rows: newRows, selectedRow: newSelectedRow,
+            saveAllReady: saveAllReady, saveSelectedReady: saveSelectedReady
+        });
     },
 
     getRowAt: function (index) {
@@ -41,24 +43,28 @@ module.exports = React.createClass({
         return this.state.rows.length;
     },
 
+    programToRow: function (program) {
+        var program_row = {
+            id: program.id,
+            name: program.name,
+            loop_counter: program.loop_counter
+        };
+
+        program.steps.forEach(function (step, index) {
+            var step_num = index + 1;
+            program_row['Ramp' + step_num] = step.ramp;
+            program_row['Level' + step_num] = step.level;
+            program_row['Dwell' + step_num] = step.dwell;
+        });
+
+        return program_row;
+    },
+
     resetPrograms: function () {
         ProgramService.get().then(function (programs) {
             var rows = programs.map(function (program) {
-                var program_row = {
-                    id: program.id,
-                    name: program.name,
-                    loop_counter: program.loop_counter
-                };
-
-                program.steps.forEach(function (step, index) {
-                    var step_num = index + 1;
-                    program_row['Ramp' + step_num] = step.ramp;
-                    program_row['Level' + step_num] = step.level;
-                    program_row['Dwell' + step_num] = step.dwell;
-                });
-
-                return program_row;
-            });
+                return this.programToRow(program);
+            }.bind(this));
 
             this.updateState(this.state, rows, null);
         }.bind(this));
@@ -102,6 +108,30 @@ module.exports = React.createClass({
         ProgramService.savePrograms([program]);
 
         selectedRow.dirty = false;
+        this.updateState(this.state);
+    },
+
+    addProgram: function() {
+        var steps = [{ramp:0.1, level:0, dwell:0}];
+        for (var step_num = 2; step_num < 9; step_num++) {
+            steps.push({
+                ramp: 0,
+                level: 0,
+                dwell: 0
+            });
+        }
+
+        var newProgram = {
+            id: uuid.v1(),
+            name: "New Program",
+            loop_counter: 1,
+            steps: steps
+        };
+
+        var newRow = this.programToRow(newProgram);
+        newRow.dirty = true;
+        this.state.rows.push(newRow);
+
         this.updateState(this.state);
     },
 
@@ -167,6 +197,7 @@ module.exports = React.createClass({
                 onSaveAll={this.saveAllPrograms}
                 onSaveSelected={this.saveSelectedProgram}
                 onReset={this.resetPrograms}
+                onAddProgram={this.addProgram}
                 saveAllReady={this.state.saveAllReady}
                 saveSelectedReady={this.state.saveSelectedReady}
             />
