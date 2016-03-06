@@ -48,6 +48,11 @@ namespace achiir6500.server
             }
         }
 
+        public void DeletePrograms(List<Pc900Program> pc900Programs)
+        {
+            _programs.RemoveAll(program => pc900Programs.Select(deletedProgram => deletedProgram.id).Contains(program.id));
+        }
+
         public Pc900Program GetProgram(string programId)
         {
             foreach (Pc900Program pc900Program in _programs)

@@ -38,4 +38,21 @@ module.exports = class ProgramService {
             }
         });
     }
+
+    static deletePrograms(programs) {
+        return fetch('http://localhost:9858/delete-programs', {
+                method: 'POST',
+                body: JSON.stringify(programs),
+                headers: {
+                    'content-type': 'application/json; charset=utf-8'
+                }
+            }
+        ).then(function (response) {
+            if (response.status == 200) {
+                console.log("Deleted programs:" + JSON.stringify(programs));
+            } else {
+                console.log("Error deleting programs: Status:" + status + " Body:" + response.body);
+            }
+        });
+    }
 };

@@ -7,3 +7,11 @@ html, body { height: 100%; margin: 0; padding: 0; }
 .header, .footer { background: #f7f7f7; }
 .content-body { background: #e7e7e7; }
 .footer { position: fixed; bottom: 0 }
+
+.deleting {
+    color:red;
+}
+
+.dirty{
+    color: green;
+}

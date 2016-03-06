@@ -6,10 +6,15 @@ var uuid = require('uuid');
 var ProgramTableToolbar = React.createClass({
     render: function () {
         return <div>
-            <input className={"btn"} type="button" onClick={this.props.onRun} value="Run Program"/>
+            <input className={"btn"} type="button" disabled={!this.props.hasSelectedRow}
+                   onClick={this.props.onRun} value="Run Program"/>
             <input className={"btn"} type="button" disabled={!this.props.saveSelectedReady}
                    onClick={this.props.onSaveSelected} value="Save Selected"/>
-            <input className={"btn"} type="button" onClick={this.props.onAddProgram} value="Add Program"/>- -
+            <input className={"btn"} type="button" disabled={!this.props.hasSelectedRow}
+                   onClick={this.props.onDeleteSelected} value="Delete Selected"/>
+            - -
+            <input className={"btn"} type="button" onClick={this.props.onAddProgram} value="Add Program"/>
+            - -
             <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
                    onClick={this.props.onSaveAll} value="Save All"/>
             <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
@@ -26,8 +31,8 @@ module.exports = React.createClass({
     updateState: function (currentState, rows = null, selectedRow = null) {
         var newRows = rows ? rows : currentState.rows;
         var newSelectedRow = selectedRow ? selectedRow : currentState.selectedRow;
-        var saveAllReady = newRows.find((row)=> row.dirty == true) ? true : false;
-        var saveSelectedReady = newSelectedRow && newSelectedRow.dirty;
+        var saveAllReady = newRows.find((row)=> row.dirty == true || row.queueDelete == true) ? true : false;
+        var saveSelectedReady = newSelectedRow && (newSelectedRow.dirty || newSelectedRow.queueDelete);
 
         this.setState({
             rows: newRows, selectedRow: newSelectedRow,
@@ -100,14 +105,41 @@ module.exports = React.createClass({
         };
     },
 
+    fullyDeleteRow: function (row) {
+        var selectedIndex = this.state.rows.indexOf(row);
+        if (selectedIndex != -1) {
+            this.state.rows.splice(selectedIndex, 1);
+        }
+    },
+
     saveSelectedProgram: function () {
         var selectedRow = this.state.selectedRow;
 
         var program = this.rowToProgram(selectedRow);
 
-        ProgramService.savePrograms([program]);
+        if(selectedRow.dirty) {
+            ProgramService.savePrograms([program]);
+        }else if(selectedRow.queueDelete){
+            ProgramService.deletePrograms([program]);
+            this.fullyDeleteRow(selectedRow);
+        }
 
         selectedRow.dirty = false;
+        this.updateState(this.state);
+    },
+
+    saveAllPrograms: function () {
+        var dirtyPrograms = this.state.rows
+            .filter(row => row.dirty)
+            .map(row => this.rowToProgram(row));
+        ProgramService.savePrograms(dirtyPrograms);
+        this.state.rows.forEach(row => row.dirty = false);
+
+        var queueDeleteRows = this.state.rows.filter(row => row.queueDelete);
+        var queueDeletePrograms = queueDeleteRows.map(row => this.rowToProgram(row));
+        ProgramService.deletePrograms(queueDeletePrograms);
+        queueDeleteRows.forEach(row => this.fullyDeleteRow(row));
+
         this.updateState(this.state);
     },
 
@@ -135,14 +167,11 @@ module.exports = React.createClass({
         this.updateState(this.state);
     },
 
-    saveAllPrograms: function () {
-        var dirtyPrograms = this.state.rows
-            .filter(row => row.dirty)
-            .map(row => this.rowToProgram(row));
-
-        ProgramService.savePrograms(dirtyPrograms);
-
-        this.state.rows.forEach(row => row.dirty = false);
+    deleteProgram: function(){
+        console.log(this.state.selectedRow);
+        var selectedRow = this.state.selectedRow;
+        selectedRow.dirty = false;
+        selectedRow.queueDelete = true;
         this.updateState(this.state);
     },
 
@@ -159,12 +188,16 @@ module.exports = React.createClass({
             setScrollLeft: function (scrollBy) {
                 this.refs.row.setScrollLeft(scrollBy);
             },
-            render: function () {
-                if (this.props.row.dirty) {
-                    return <div style={{color:'red'}}><ReactDataGrid.Row ref="row" {...this.props}/></div>
-                } else {
-                    return <div><ReactDataGrid.Row ref="row" {...this.props}/></div>
+            getClass: function(){
+                if (this.props.row.queueDelete) {
+                    return "deleting";
                 }
+                if (this.props.row.dirty) {
+                    return "dirty";
+                }
+            },
+            render: function () {
+                return <div className={this.getClass()}><ReactDataGrid.Row ref="row" {...this.props}/></div>
             }
         });
 
@@ -198,8 +231,10 @@ module.exports = React.createClass({
                 onSaveSelected={this.saveSelectedProgram}
                 onReset={this.resetPrograms}
                 onAddProgram={this.addProgram}
+                onDeleteSelected={this.deleteProgram}
                 saveAllReady={this.state.saveAllReady}
                 saveSelectedReady={this.state.saveSelectedReady}
+                hasSelectedRow={this.state.selectedRow ? true : false}
             />
             <ReactDataGrid
                 columns={columns}

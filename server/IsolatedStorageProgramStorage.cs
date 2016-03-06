@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -34,6 +35,13 @@ namespace achiir6500.server
                     programs[currentIndex] = program;
                 }
             });
+            SavePrograms(programs);
+        }
+
+        public void DeletePrograms(List<Pc900Program> pc900Programs)
+        {
+            var programs = GetPrograms();
+            programs.RemoveAll(program => pc900Programs.Select(deletedProgram => deletedProgram.id).Contains(program.id));
             SavePrograms(programs);
         }
 
