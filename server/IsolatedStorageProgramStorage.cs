@@ -91,7 +91,7 @@ namespace achiir6500.server
             var isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null,
                 null);
             using (
-                var isoStream = new IsolatedStorageFileStream(SaveFileName, FileMode.OpenOrCreate, isoStore))
+                var isoStream = new IsolatedStorageFileStream(SaveFileName, FileMode.Create, isoStore))
             {
                 using (var writer = new StreamWriter(isoStream))
                 {

@@ -143,15 +143,15 @@ module.exports = React.createClass({
         var dirtyPrograms = this.state.rows
             .filter(row => row.dirty)
             .map(row => this.rowToProgram(row));
-        ProgramService.savePrograms(dirtyPrograms);
-        this.state.rows.forEach(row => row.dirty = false);
-
-        var queueDeleteRows = this.state.rows.filter(row => row.queueDelete);
-        var queueDeletePrograms = queueDeleteRows.map(row => this.rowToProgram(row));
-        ProgramService.deletePrograms(queueDeletePrograms);
-        queueDeleteRows.forEach(row => this.fullyDeleteRow(row));
-
-        this.updateState(this.state);
+        ProgramService.savePrograms(dirtyPrograms).then(function(){
+            var queueDeleteRows = this.state.rows.filter(row => row.queueDelete);
+            var queueDeletePrograms = queueDeleteRows.map(row => this.rowToProgram(row));
+            ProgramService.deletePrograms(queueDeletePrograms);
+            queueDeleteRows.forEach(row => this.fullyDeleteRow(row));
+        }.bind(this)).then(function(){
+            this.state.rows.forEach(row => row.dirty = false);
+            this.updateState(this.state);
+        }.bind(this));
     },
 
     addProgram: function () {
