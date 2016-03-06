@@ -22,19 +22,19 @@ module.exports = class ProgramService {
         });
     }
 
-    static saveProgram(program) {
+    static savePrograms(programs) {
         return fetch('http://localhost:9858/programs', {
                 method: 'POST',
-                body: JSON.stringify([program]),
+                body: JSON.stringify(programs),
                 headers: {
                     'content-type': 'application/json; charset=utf-8'
                 }
             }
         ).then(function (response) {
             if (response.status == 200) {
-                console.log("Saved program:" + JSON.stringify(program));
+                console.log("Saved programs:" + JSON.stringify(programs));
             } else {
-                console.log("Error saving program: Status:" + status + " Body:" + response.body);
+                console.log("Error saving programs: Status:" + status + " Body:" + response.body);
             }
         });
     }

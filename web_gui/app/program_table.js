@@ -6,21 +6,29 @@ var ProgramTableToolbar = React.createClass({
     render: function () {
         return <div>
             <input type="button" onClick={this.props.onRun} value="Run Program"/>
-            <input type="button" onClick={this.props.onSave} value="Save Selected"/>
+            <input type="button" disabled={!this.props.saveSelectedReady}
+                   onClick={this.props.onSaveSelected}
+                   value="Save Selected"/> -
+            <input type="button" disabled={!this.props.saveAllReady}
+                   onClick={this.props.onSaveAll}
+                   value="Save All"/>
         </div>
     }
 });
 
 module.exports = React.createClass({
     getInitialState: function () {
-        return {rows: [], selectedRow: null, dirtyRows: []};
+        return {rows: [], selectedRow: null, saveAllReady: false};
     },
 
-    updateState: function (currentState, rows = null, selectedRow = null, dirtyRows = null) {
+    updateState: function (currentState, rows = null, selectedRow = null) {
         var newRows = rows ? rows : currentState.rows;
         var newSelectedRow = selectedRow ? selectedRow : currentState.selectedRow;
-        var newDirtyRows = dirtyRows ? dirtyRows : currentState.dirtyRows;
-        this.setState({rows: newRows, selectedRow: newSelectedRow, dirtyRows: newDirtyRows});
+        var saveAllReady = newRows.find((row)=> row.dirty == true) ? true : false;
+        var saveSelectedReady = newSelectedRow && newSelectedRow.dirty;
+
+        this.setState({rows: newRows, selectedRow: newSelectedRow,
+            saveAllReady: saveAllReady, saveSelectedReady: saveSelectedReady});
     },
 
     getRowAt: function (index) {
@@ -62,27 +70,43 @@ module.exports = React.createClass({
         ProgramService.runProgram(this.state.selectedRow.id);
     },
 
-    saveProgram: function () {
-        var selectedRow = this.state.selectedRow;
-
+    rowToProgram: function (row) {
         var steps = [];
         for (var step_num = 1; step_num < 9; step_num++) {
             steps.push({
-                ramp: selectedRow['Ramp' + step_num],
-                level: selectedRow['Level' + step_num],
-                dwell: selectedRow['Dwell' + step_num]
+                ramp: row['Ramp' + step_num],
+                level: row['Level' + step_num],
+                dwell: row['Dwell' + step_num]
             });
         }
 
-        var program = {
-            id: selectedRow.id,
-            name: selectedRow.name,
-            loop_counter: selectedRow.loop_counter,
+        return {
+            id: row.id,
+            name: row.name,
+            loop_counter: row.loop_counter,
             steps: steps
         };
+    },
 
-        ProgramService.saveProgram(program);
+    saveSelectedProgram: function () {
+        var selectedRow = this.state.selectedRow;
+
+        var program = this.rowToProgram(selectedRow);
+
+        ProgramService.savePrograms([program]);
+
         selectedRow.dirty = false;
+        this.updateState(this.state);
+    },
+
+    saveAllPrograms: function () {
+        var dirtyPrograms = this.state.rows
+            .filter(row => row.dirty)
+            .map(row => this.rowToProgram(row));
+
+        ProgramService.savePrograms(dirtyPrograms);
+
+        this.state.rows.forEach(row => row.dirty = false);
         this.updateState(this.state);
     },
 
@@ -91,7 +115,7 @@ module.exports = React.createClass({
         Object.assign(rows[e.rowIdx], e.updated);
         rows[e.rowIdx].dirty = true;
 
-        this.updateState(this.state, rows, null);
+        this.updateState(this.state, rows);
     },
 
     render: function () {
@@ -99,13 +123,10 @@ module.exports = React.createClass({
             setScrollLeft: function (scrollBy) {
                 this.refs.row.setScrollLeft(scrollBy);
             },
-            getRowColor: function () {
-                return { color:this.props.row.dirty ? 'green' : 'blue'}
-            },
             render: function () {
-                if(this.props.row.dirty) {
+                if (this.props.row.dirty) {
                     return <div style={{color:'red'}}><ReactDataGrid.Row ref="row" {...this.props}/></div>
-                }else{
+                } else {
                     return <div><ReactDataGrid.Row ref="row" {...this.props}/></div>
                 }
             }
@@ -137,7 +158,10 @@ module.exports = React.createClass({
         return (<div>
             <ProgramTableToolbar
                 onRun={this.runProgram}
-                onSave={this.saveProgram}
+                onSaveAll={this.saveAllPrograms}
+                onSaveSelected={this.saveSelectedProgram}
+                saveAllReady={this.state.saveAllReady}
+                saveSelectedReady={this.state.saveSelectedReady}
             />
             <ReactDataGrid
                 columns={columns}
