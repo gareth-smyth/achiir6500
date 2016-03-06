@@ -6,7 +6,8 @@ var uuid = require('uuid');
 var ProgramTableToolbar = React.createClass({
     render: function () {
         return <div>
-            <input className={"btn"} type="button" disabled={!this.props.hasSelectedRow}
+            <input className={"btn"} type="button"
+                   disabled={!this.props.hasSelectedRow || this.props.selectedRowQueuedDelete}
                    onClick={this.props.onRun} value="Run Program"/>
             <input className={"btn"} type="button" disabled={!this.props.saveSelectedReady}
                    onClick={this.props.onSaveSelected} value="Save Selected"/>
@@ -84,7 +85,17 @@ module.exports = React.createClass({
     },
 
     runProgram: function () {
-        ProgramService.runProgram(this.state.selectedRow.id);
+        var selectedRow = this.state.selectedRow;
+        if (selectedRow.dirty) {
+            var program = this.rowToProgram(selectedRow);
+            ProgramService.savePrograms([program]).then(function () {
+                ProgramService.runProgram(selectedRow.id);
+                selectedRow.dirty = false;
+                this.updateState(this.state);
+            }.bind(this));
+        } else {
+            ProgramService.runProgram(selectedRow.id);
+        }
     },
 
     rowToProgram: function (row) {
@@ -117,9 +128,9 @@ module.exports = React.createClass({
 
         var program = this.rowToProgram(selectedRow);
 
-        if(selectedRow.dirty) {
+        if (selectedRow.dirty) {
             ProgramService.savePrograms([program]);
-        }else if(selectedRow.queueDelete){
+        } else if (selectedRow.queueDelete) {
             ProgramService.deletePrograms([program]);
             this.fullyDeleteRow(selectedRow);
         }
@@ -143,8 +154,8 @@ module.exports = React.createClass({
         this.updateState(this.state);
     },
 
-    addProgram: function() {
-        var steps = [{ramp:0.1, level:0, dwell:0}];
+    addProgram: function () {
+        var steps = [{ramp: 0.1, level: 0, dwell: 0}];
         for (var step_num = 2; step_num < 9; step_num++) {
             steps.push({
                 ramp: 0,
@@ -167,8 +178,7 @@ module.exports = React.createClass({
         this.updateState(this.state);
     },
 
-    deleteProgram: function(){
-        console.log(this.state.selectedRow);
+    deleteProgram: function () {
         var selectedRow = this.state.selectedRow;
         selectedRow.dirty = false;
         selectedRow.queueDelete = true;
@@ -188,7 +198,7 @@ module.exports = React.createClass({
             setScrollLeft: function (scrollBy) {
                 this.refs.row.setScrollLeft(scrollBy);
             },
-            getClass: function(){
+            getClass: function () {
                 if (this.props.row.queueDelete) {
                     return "deleting";
                 }
@@ -235,6 +245,7 @@ module.exports = React.createClass({
                 saveAllReady={this.state.saveAllReady}
                 saveSelectedReady={this.state.saveSelectedReady}
                 hasSelectedRow={this.state.selectedRow ? true : false}
+                selectedRowQueuedDelete={(this.state.selectedRow && this.state.selectedRow.queueDelete) ? true : false}
             />
             <ReactDataGrid
                 columns={columns}
