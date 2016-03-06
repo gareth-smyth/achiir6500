@@ -30,7 +30,7 @@ namespace achiir6500.server
             return _programs;
         }
 
-        public void UpdatePrograms(Pc900Program[] pc900Programs)
+        public void UpdatePrograms(List<Pc900Program> pc900Programs)
         {
             foreach(Pc900Program updatedProgram in pc900Programs)
             {

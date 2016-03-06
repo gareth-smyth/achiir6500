@@ -14,10 +14,11 @@ namespace achiir6500.server
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IReflowStation, ReflowStation>().AsSingleton();
-            container.Register<IProgramStorage, InMemoryProgramStorage>().AsSingleton();
+            container.Register<IProgramStorage, IsolatedStorageProgramStorage>().AsSingleton();
 
             pipelines.AfterRequest += ctx =>
             {
+                ctx.Response.Headers.Add("Access-Control-Allow-Headers", "content-type");
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             };
         }

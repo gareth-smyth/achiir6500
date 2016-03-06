@@ -5,6 +5,7 @@ using System.Text;
 using Nancy;
 using Nancy.ModelBinding;
 using Newtonsoft.Json.Linq;
+using Nancy.Extensions;
 
 namespace achiir6500.server
 {
@@ -15,7 +16,7 @@ namespace achiir6500.server
             Get["/programs"] = _ => JArray.FromObject(programStorage.GetPrograms()).ToString();
             Post["/programs"] = _ =>
             {
-                programStorage.UpdatePrograms(this.Bind<Pc900Program[]>());
+                programStorage.UpdatePrograms(this.Bind<List<Pc900Program>>());
                 return @"{""status"":""OK""}";
             };
             Post["Start-program/{programId}"] = path =>

@@ -2,10 +2,10 @@
 {
     public class Pc900Program
     {
-        public string id;
-        public string name;
-        public int loop_counter;
-        public Pc900ProgramStep[] steps;
+        public string id { get; set; }
+        public string name { get; set; }
+        public int loop_counter { get; set; }
+        public Pc900ProgramStep[] steps { get; set; }
 
         public Pc900Program()
         {

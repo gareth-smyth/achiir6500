@@ -2,9 +2,9 @@
 {
     public class Pc900ProgramStep
     {
-        public double ramp = 0;
-        public double level = 0;
-        public double dwell = 0;
+        public double ramp { get; set; }
+        public double level { get; set; }
+        public double dwell { get; set; }
 
         public Pc900ProgramStep()
         {
