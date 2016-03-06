@@ -5,13 +5,15 @@ var ProgramService = require('./program_service');
 var ProgramTableToolbar = React.createClass({
     render: function () {
         return <div>
-            <input type="button" onClick={this.props.onRun} value="Run Program"/>
-            <input type="button" disabled={!this.props.saveSelectedReady}
+            <input className={"btn"} type="button" onClick={this.props.onRun} value="Run Program"/>
+            <input className={"btn"} type="button" disabled={!this.props.saveSelectedReady}
                    onClick={this.props.onSaveSelected}
-                   value="Save Selected"/> -
-            <input type="button" disabled={!this.props.saveAllReady}
+                   value="Save Selected"/> - <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
                    onClick={this.props.onSaveAll}
                    value="Save All"/>
+            <input className={"btn"} type="button" disabled={!this.props.saveAllReady}
+                   onClick={this.props.onReset}
+                   value="Reset All"/>
         </div>
     }
 });
@@ -39,7 +41,7 @@ module.exports = React.createClass({
         return this.state.rows.length;
     },
 
-    componentDidMount: function () {
+    resetPrograms: function () {
         ProgramService.get().then(function (programs) {
             var rows = programs.map(function (program) {
                 var program_row = {
@@ -60,6 +62,10 @@ module.exports = React.createClass({
 
             this.updateState(this.state, rows, null);
         }.bind(this));
+    },
+
+    componentDidMount: function () {
+        this.resetPrograms();
     },
 
     onRowSelect: function (rows) {
@@ -160,6 +166,7 @@ module.exports = React.createClass({
                 onRun={this.runProgram}
                 onSaveAll={this.saveAllPrograms}
                 onSaveSelected={this.saveSelectedProgram}
+                onReset={this.resetPrograms}
                 saveAllReady={this.state.saveAllReady}
                 saveSelectedReady={this.state.saveSelectedReady}
             />
