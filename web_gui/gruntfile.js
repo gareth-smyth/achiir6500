@@ -6,7 +6,7 @@ module.exports = function (grunt) {
             dev: {
                 options: {
                     debug: true,
-                    transform: ["browserify-css", ["babelify", {presets: ['react']}]]
+                    transform: ["browserify-css", ["babelify", {presets: ['react', 'es2015']}]]
                 },
                 files: {
                     './build/bundle.js': 'app/**/*.js'
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
             build: {
                 options: {
                     debug: false,
-                    transform: ["browserify-css", ["babelify", {presets: ['react']}]]
+                    transform: ["browserify-css", ["babelify", {presets: ['react', 'es2015']}]]
                 },
                 files: {
                     './build/bundle.js': 'app/**/*.js'
