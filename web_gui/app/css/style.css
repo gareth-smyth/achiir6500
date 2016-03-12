@@ -1,17 +1,56 @@
-html, body { height: 100%; margin: 0; padding: 0; }
-
-.contain { width: 100%; height: 95%; margin: 0}
-.content { height: 100%; width:100%}
-.config-display {  width:100%; height: 100%}
-
-.header, .footer { background: #f7f7f7; }
-.content-body { background: #e7e7e7; }
-.footer { position: fixed; bottom: 0 }
-
-.deleting {
-    color:red;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.dirty{
+.contain {
+    width: 100%;
+    height: 95%;
+    margin: 0
+}
+
+.content {
+    height: 100%;
+    width: 100%
+}
+
+.config-display {
+    width: 100%;
+    height: 100%
+}
+
+.header, .footer {
+    background: #f7f7f7;
+}
+
+.content-body {
+    background: #e7e7e7;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0
+}
+
+.deleting {
+    color: red;
+}
+
+.dirty {
     color: green;
+}
+
+.chartdiv {
+    top:35px;
+    position: fixed;
+    width: 100%;
+    bottom: 285px;
+}
+
+.tablediv {
+    position: fixed;
+    bottom: -35px;
+    height: 300px;
+    width: 100%;
 }

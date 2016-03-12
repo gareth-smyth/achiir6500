@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var ProgramTable = require('./program_table.js');
+var Program = require('./program.js');
 require('./styles.css');
 
 ReactDOM.render(
@@ -10,7 +10,7 @@ ReactDOM.render(
         </div>
         <div className="contain">
             <div className="content">
-                <ProgramTable/>
+                <Program/>
             </div>
         </div>
         <div className="footer">
