@@ -50,7 +50,13 @@ module.exports = React.createClass({
 
     componentWillReceiveProps: function (nextProps) {
         var currentChartData = this.state.chartData;
-        this.setChartData(currentChartData.datasets[0], nextProps.programs[0]);
+        var selectedIndex = nextProps.programs.findIndex(function(program){
+           return nextProps.selectedProgram === program.id;
+        });
+        selectedIndex = selectedIndex < 0 ? 0 : selectedIndex;
+        this.setChartData(
+            currentChartData.datasets[0],
+            nextProps.programs[selectedIndex]);
         currentChartData.labels = [];
         this.updateState(this.state, currentChartData);
     },

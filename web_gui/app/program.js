@@ -5,7 +5,7 @@ var ProgramService = require('./program_service.js');
 
 module.exports = React.createClass({
     getInitialState: function () {
-        return {programs: [], reset: false};
+        return {programs: [], selectedProgram: 0 };
     },
 
     componentDidMount: function () {
@@ -33,16 +33,25 @@ module.exports = React.createClass({
         ProgramService.runProgram(programId);
     },
 
+    selectProgram: function(programId){
+        this.state.selectedProgram = programId;
+        this.setState(this.state);
+    },
+
     render: function () {
         return <div>
             <ProgramChart
-                programs={this.state.programs}/>
+                programs={this.state.programs}
+                selectedProgram={this.state.selectedProgram}
+            />
             <ProgramTableComponent
                 programs={this.state.programs}
                 onProgramsChanged={this.updatePrograms}
                 onReset={this.resetPrograms}
                 onSave={this.savePrograms}
-                onRun={this.runProgram}/>
+                onRun={this.runProgram}
+                onSelectProgram={this.selectProgram}
+            />
         </div>;
     }
 });

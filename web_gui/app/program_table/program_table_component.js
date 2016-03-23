@@ -110,6 +110,7 @@ module.exports = React.createClass({
     },
 
     onRowSelect: function (rows) {
+        this.props.onSelectProgram(rows[0].id);
         this.updateState(this.state, null, rows[0]);
     },
 
