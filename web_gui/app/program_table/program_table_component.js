@@ -25,7 +25,7 @@ module.exports = React.createClass({
             var propName = aProps[i];
 
             if (propName != "dirty" && propName != "queueDelete" && propName != "isSelected") {
-                if (""+rowA[propName] !== ""+rowB[propName]) {
+                if ("" + rowA[propName] !== "" + rowB[propName]) {
                     return false;
                 }
             }
@@ -78,16 +78,18 @@ module.exports = React.createClass({
     },
 
     // Handling state
-    updateState: function (currentState, rows = null, selectedRow = null) {
+    updateState: function (currentState, rows = null, selectedRow = null, callback = null) {
         var newRows = rows ? rows : currentState.rows;
         var newSelectedRow = selectedRow ? selectedRow : currentState.selectedRow;
+        console.log("Current:" + currentState.selectedRow + ", New:" + newSelectedRow + ", sent:" + selectedRow);
         var hasChanges = newRows.find((row)=> row.dirty == true || row.queueDelete == true) ? true : false;
 
         this.setState({
-            rows: newRows,
-            selectedRow: newSelectedRow,
-            hasChanges: hasChanges
-        });
+                rows: newRows,
+                selectedRow: newSelectedRow,
+                hasChanges: hasChanges
+            },
+            callback);
     },
 
     // React
@@ -110,8 +112,9 @@ module.exports = React.createClass({
     },
 
     onRowSelect: function (rows) {
-        this.props.onSelectProgram(rows[0].id);
-        this.updateState(this.state, null, rows[0]);
+        this.updateState(this.state, null, rows[0], function () {
+            this.props.onSelectProgram(rows[0].id);
+        });
     },
 
     onRowUpdated: function (e) {
@@ -123,7 +126,6 @@ module.exports = React.createClass({
     },
 
     // Other!!!
-
     runProgram: function () {
         var selectedRow = this.state.selectedRow;
         this.props.onRun(selectedRow.id);
@@ -144,8 +146,12 @@ module.exports = React.createClass({
 
         this.props.onSave(dirtyPrograms, deletingPrograms);
 
-        dirtyRows.forEach(row => { row.dirty = false; });
-        deletingRows.forEach(row => { this.fullyDeleteRow(row)});
+        dirtyRows.forEach(row => {
+            row.dirty = false;
+        });
+        deletingRows.forEach(row => {
+            this.fullyDeleteRow(row)
+        });
 
         this.updateState(this.state);
     },
