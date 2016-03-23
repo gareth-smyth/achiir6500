@@ -81,7 +81,6 @@ module.exports = React.createClass({
     updateState: function (currentState, rows = null, selectedRow = null, callback = null) {
         var newRows = rows ? rows : currentState.rows;
         var newSelectedRow = selectedRow ? selectedRow : currentState.selectedRow;
-        console.log("Current:" + currentState.selectedRow + ", New:" + newSelectedRow + ", sent:" + selectedRow);
         var hasChanges = newRows.find((row)=> row.dirty == true || row.queueDelete == true) ? true : false;
 
         this.setState({
