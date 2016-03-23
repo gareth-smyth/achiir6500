@@ -6,23 +6,28 @@ using Newtonsoft.Json.Linq;
 
 namespace achiir6500.server
 {
-    public class InMemoryProgramStorage : IProgramStorage
+    public class InMemoryProgramStorage : IProgramStorage   
     {
         private readonly List<Pc900Program> _programs = new List<Pc900Program>();
 
         public InMemoryProgramStorage()
         {
-            Pc900ProgramStep[] program0Steps = new Pc900ProgramStep[3];
-            program0Steps[0] = new Pc900ProgramStep(0.01, 25, 9999);
-            program0Steps[1] = new Pc900ProgramStep(99.99, 30, 9999);
-            program0Steps[2] = new Pc900ProgramStep();
+            Pc900ProgramStep[] program0Steps = new Pc900ProgramStep[8];
+            program0Steps[0] = new Pc900ProgramStep(1, 0, 360);
+            program0Steps[1] = new Pc900ProgramStep(1, 190, 30);
+            program0Steps[2] = new Pc900ProgramStep(1, 200, 15);
+            program0Steps[3] = new Pc900ProgramStep(1, 210, 45);
+            program0Steps[4] = new Pc900ProgramStep(1, 220, 30);
+            program0Steps[5] = new Pc900ProgramStep(1, 230, 45);
+            program0Steps[6] = new Pc900ProgramStep(1, 25, 1);
+            program0Steps[7] = new Pc900ProgramStep(1, 25, 1);
             _programs.Add(new Pc900Program("iamaguid_1", "Remove PS3 GPU", 1, program0Steps));
 
-            Pc900ProgramStep[] program1Steps = new Pc900ProgramStep[3];
-            program1Steps[0] = new Pc900ProgramStep(1, 180, 30);
-            program1Steps[1] = new Pc900ProgramStep(1, 210, 35);
-            program1Steps[2] = new Pc900ProgramStep();
-            _programs.Add(new Pc900Program("iamaguid_2", "Reflow PS3 GPU", 2, program1Steps));
+//            Pc900ProgramStep[] program1Steps = new Pc900ProgramStep[3];
+//            program1Steps[0] = new Pc900ProgramStep(1, 180, 30);
+//            program1Steps[1] = new Pc900ProgramStep(1, 210, 35);
+//            program1Steps[2] = new Pc900ProgramStep();
+//            _programs.Add(new Pc900Program("iamaguid_2", "Reflow PS3 GPU", 2, program1Steps));
         }
 
         public List<Pc900Program> GetPrograms()
