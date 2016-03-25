@@ -41,8 +41,7 @@ namespace achiir6500.server_test
 
             String responseBody = response.Content.ReadAsStringAsync().Result;
             Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(responseBody, Contains.Substring(@"""loop_counter"": 1"));
-            Assert.That(responseBody, Contains.Substring(@"""dwell"": 35"));
+            Assert.That(responseBody, Contains.Substring(@"""id"": ""iamaguid_1"""));
         }
 
         [Test]
@@ -84,7 +83,7 @@ namespace achiir6500.server_test
             Pc900ProgramStep[] steps = new Pc900ProgramStep[1];
             steps[0] = new Pc900ProgramStep(10, 20, 40);
             Pc900Program pc900Program = new Pc900Program("new_id", "new name", 85, steps);
-            Pc900Program[] programs = new Pc900Program[] { pc900Program };
+            Pc900Program[] programs = { pc900Program };
             _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json"));
 
             HttpResponseMessage response = _client.PostAsync("/Start-program/new_id", new StringContent("")).Result;
