@@ -15,11 +15,11 @@ communicate with the rework station
 * **cli** - a quick command line program used to set things up and test them when directly connected to a rework station
 
 # Build
-**Server**
-The .NET components have been build using Microsoft Visual Studio Community 2015.  The `achiir6500.sln` file can be
+**Server**  
+The .NET components have been built using Microsoft Visual Studio Community 2015.  The `achiir6500.sln` file can be
 opened and the build should take care of itself.
 
-**GUI**
+**GUI**  
 The web gui has been built using node, npm, grunt, react, chartjs and various other libraries (see package.json). There
 isn't a whole lot in the way of grunt task set up but the basic steps to get the serer up and running are
 * cd web_gui
@@ -27,14 +27,14 @@ isn't a whole lot in the way of grunt task set up but the basic steps to get the
 * grunt build
 
 # Run In Development
-**Server**
+**Server**  
 * Run the server_mock project for test isolated from the rework station
-* Run the server project to test against an actual instance of the rework station exposed on COM1
+* Run the server project to test against an actual instance of the rework station exposed on COM1  
 
 The server should now be exposed on http://localhost:9858 - try hitting http://localhost:9858/programs to see if the
 server is running.
 
-**GUI**
+**GUI**  
 * cd web_gui
 * grunt serve
 
