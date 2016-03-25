@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace achiir6500.server
 {
-    public class ReflowStation: IReflowStation
+    public class ReworkStation: IReworkStation
     {
         public Pc900ProgramRun Start(Pc900Program program)
         {

@@ -12,7 +12,7 @@ namespace achiir6500.cli
                 new Pc900ProgramStep(7, 8, 9)
             };
             Pc900Program program = new Pc900Program(Guid.NewGuid().ToString(), "Program1", 1, steps);
-            new ReflowStation().LoadRun(program);
+            new ReworkStation().LoadRun(program);
         }
     }
 }

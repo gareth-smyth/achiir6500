@@ -2,7 +2,7 @@
 
 namespace achiir6500.server
 {
-    public interface IReflowStation
+    public interface IReworkStation
     {
         Pc900ProgramRun Start(Pc900Program program);
     }

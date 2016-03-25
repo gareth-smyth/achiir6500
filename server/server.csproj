@@ -76,13 +76,13 @@
     <Compile Include="Controller.cs" />
     <Compile Include="InMemoryProgramStorage.cs" />
     <Compile Include="IProgramStorage.cs" />
-    <Compile Include="IReflowStation.cs" />
+    <Compile Include="IReworkStation.cs" />
     <Compile Include="IsolatedStorageProgramStorage.cs" />
     <Compile Include="Pc900ProgramRun.cs" />
     <Compile Include="Pc900Program.cs" />
     <Compile Include="Pc900ProgramStep.cs" />
     <Compile Include="Pc900Translator.cs" />
-    <Compile Include="ReflowStation.cs" />
+    <Compile Include="ReworkStation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyNancyBootstraper.cs" />

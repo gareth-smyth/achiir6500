@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace achiir6500.server_mock
 {
-    public class MockReflowStation : IReflowStation
+    public class MockReworkStation : IReworkStation
     {
         public Pc900ProgramRun Start(Pc900Program program)
         {

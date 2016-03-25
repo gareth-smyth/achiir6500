@@ -11,7 +11,7 @@ namespace achiir6500.server
 {
     public class Controller : NancyModule
     {
-        public Controller(IReflowStation reflowStation, IProgramStorage programStorage)
+        public Controller(IReworkStation reworkStation, IProgramStorage programStorage)
         {
             Get["/programs"] = _ => JArray.FromObject(programStorage.GetPrograms()).ToString();
             Post["/programs"] = _ =>
@@ -27,7 +27,7 @@ namespace achiir6500.server
             Post["Start-program/{programId}"] = path =>
             {
                 Pc900Program program = programStorage.GetProgram(path.programId.Value);
-                return JObject.FromObject(reflowStation.Start(program)).ToString();
+                return JObject.FromObject(reworkStation.Start(program)).ToString();
             };
         }
     }

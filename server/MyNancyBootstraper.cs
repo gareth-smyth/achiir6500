@@ -13,7 +13,7 @@ namespace achiir6500.server
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            container.Register<IReflowStation, ReflowStation>().AsSingleton();
+            container.Register<IReworkStation, ReworkStation>().AsSingleton();
             container.Register<IProgramStorage, IsolatedStorageProgramStorage>().AsSingleton();
 
             pipelines.AfterRequest += ctx =>
