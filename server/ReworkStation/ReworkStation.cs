@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 
@@ -21,6 +22,20 @@ namespace achiir6500.server
             return new Pc900ProgramRun("1234");
         }
 
+        public int GetCurrentValue()
+        {
+            var port = CreateAndOpenPort();
+            var pc900Translator = new Pc900Translator();
+
+            Console.WriteLine("Sending GetCurrentValue command");
+            var command = pc900Translator.GetCurrentValueCommand();
+            var responses = ExecuteCommand(command, port);
+
+            port.Close();
+
+            return ((GetCurrentValueCommandResponse)responses[0]).Value;
+        }
+
         public void LoadRun(Pc900Program program)
         {
             var port = CreateAndOpenPort();
@@ -33,14 +48,17 @@ namespace achiir6500.server
             port.Close();
         }
 
-        private static void ExecuteCommand(Pc900Command command, SerialPort myPort)
+        private static List<CommandResponse> ExecuteCommand(Pc900Command command, SerialPort myPort)
         {
+            List <CommandResponse> responses = new List<CommandResponse>();
+
             foreach (var buffer in command.CommandsList.Select(byteList => byteList.ToArray()))
             {
                 myPort.Write(buffer, 0, buffer.Length);
                 var readBuffer = ReadBuffer(buffer, myPort);
-                command.ResponseDelegate(readBuffer.ToList());
+                responses.Add(command.ResponseDelegate(readBuffer.ToList()));
             }
+            return responses;
         }
 
         private static SerialPort CreateAndOpenPort()

@@ -78,7 +78,7 @@
     <Compile Include="Programs\IProgramStorage.cs" />
     <Compile Include="ReworkStation\IReworkStation.cs" />
     <Compile Include="Programs\IsolatedStorageProgramStorage.cs" />
-    <Compile Include="Programs\Pc900ProgramRun.cs" />
+    <Compile Include="ProgramRun\Pc900ProgramRun.cs" />
     <Compile Include="Programs\Pc900Program.cs" />
     <Compile Include="Programs\Pc900ProgramStep.cs" />
     <Compile Include="ReworkStation\Pc900Translator.cs" />
