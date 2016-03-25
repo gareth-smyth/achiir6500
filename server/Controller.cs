@@ -24,7 +24,7 @@ namespace achiir6500.server
                 programStorage.DeletePrograms(this.Bind<List<Pc900Program>>());
                 return @"{""status"":""OK""}";
             };
-            Post["Start-program/{programId}"] = path =>
+            Post["/start-program/{programId}"] = path =>
             {
                 Pc900Program program = programStorage.GetProgram(path.programId.Value);
                 return JObject.FromObject(reworkStation.Start(program)).ToString();

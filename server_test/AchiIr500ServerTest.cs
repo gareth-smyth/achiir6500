@@ -84,9 +84,9 @@ namespace achiir6500.server_test
             steps[0] = new Pc900ProgramStep(10, 20, 40);
             Pc900Program pc900Program = new Pc900Program("new_id", "new name", 85, steps);
             Pc900Program[] programs = { pc900Program };
-            _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json")).Result;
 
-            HttpResponseMessage response = _client.PostAsync("/Start-program/new_id", new StringContent("")).Result;
+            response = _client.PostAsync("/start-program/new_id", new StringContent("")).Result;
             String responseBody = response.Content.ReadAsStringAsync().Result;
             Assert.That(response.IsSuccessStatusCode, Is.True);
             Assert.That(responseBody, Contains.Substring(@"""program_id"": ""new_id"""));

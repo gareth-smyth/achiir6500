@@ -71,24 +71,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AchiIr500Server.cs" />
-    <Compile Include="CommandResponse.cs" />
+    <Compile Include="Application\AchiIr500Server.cs" />
+    <Compile Include="ReworkStation\CommandResponse.cs" />
     <Compile Include="Controller.cs" />
-    <Compile Include="InMemoryProgramStorage.cs" />
-    <Compile Include="IProgramStorage.cs" />
-    <Compile Include="IReworkStation.cs" />
-    <Compile Include="IsolatedStorageProgramStorage.cs" />
-    <Compile Include="Pc900ProgramRun.cs" />
-    <Compile Include="Pc900Program.cs" />
-    <Compile Include="Pc900ProgramStep.cs" />
-    <Compile Include="Pc900Translator.cs" />
-    <Compile Include="ReworkStation.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Programs\InMemoryProgramStorage.cs" />
+    <Compile Include="Programs\IProgramStorage.cs" />
+    <Compile Include="ReworkStation\IReworkStation.cs" />
+    <Compile Include="Programs\IsolatedStorageProgramStorage.cs" />
+    <Compile Include="Programs\Pc900ProgramRun.cs" />
+    <Compile Include="Programs\Pc900Program.cs" />
+    <Compile Include="Programs\Pc900ProgramStep.cs" />
+    <Compile Include="ReworkStation\Pc900Translator.cs" />
+    <Compile Include="ReworkStation\ReworkStation.cs" />
+    <Compile Include="Application\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MyNancyBootstraper.cs" />
-    <Compile Include="Pc900Command.cs" />
-    <Compile Include="GetCurrentValueCommandResponse.cs" />
-    <Compile Include="StartCommandResponse.cs" />
+    <Compile Include="Application\MyNancyBootstraper.cs" />
+    <Compile Include="ReworkStation\Pc900Command.cs" />
+    <Compile Include="ReworkStation\GetCurrentValueCommandResponse.cs" />
+    <Compile Include="ReworkStation\StartCommandResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
