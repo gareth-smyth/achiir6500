@@ -30,7 +30,14 @@ namespace achiir6500.server
                 var programRun = reworkStation.Start(program);
                 programRunStorage.AddProgramRun(programRun);
 
-                _poller = new Timer(new AchiPoller(reworkStation, programRunStorage).PollWorker, null, 0, serverConfig.GetProgramRunPollingIntervalMillis());
+                var achiPoller = new AchiPoller(reworkStation, programRunStorage);
+                _poller = new Timer(poll =>
+                {
+                    if (achiPoller.PollWorker(null))
+                    {
+                        _poller.Dispose();
+                    }
+                }, null, 0, serverConfig.GetProgramRunPollingIntervalMillis());
 
                 return JObject.FromObject(programRun).ToString();
             };
@@ -50,16 +57,15 @@ namespace achiir6500.server
             _programRunStorage = programRunStorage;
         }
 
-        public void PollWorker(object state)
+        public bool PollWorker(object state)
         {
             if (_reworkStation.ProgramRunning())
             {
                 _programRunStorage.AddToCurrentProgram(_reworkStation.GetCurrentValue());
+                return false;
             }
-            else
-            { 
-                _programRunStorage.ProgramStopped();
-            }
+            _programRunStorage.ProgramStopped();
+            return true;
         }
     }
 }
