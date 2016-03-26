@@ -8,17 +8,17 @@ namespace achiir6500.server
 {
     public class Pc900Translator
     {
-        private readonly byte EOT = 0x04;                                   // End of Transmission
-        private readonly byte STX = 0x02;                                   // Start of text
-        private readonly byte ETX = 0x03;                                   // End of text
-        private readonly byte ENQ = 0x05;                                   // Enquire
-        private readonly List<byte> ADR_1 = Encoding.ASCII.GetBytes("0011").ToList();    // Instrument address 1
-        private readonly List<byte> START = Encoding.ASCII.GetBytes("#30001").ToList();  // Start command
-        private readonly byte START_BCC = 0x12;                             // Start checksum
-        private static readonly byte ACK = 0x06;                            // Positive acknowledge
-        private static readonly byte NAK = 0x15;                            // Negative acknowledge
-        private readonly List<byte> PV = Encoding.ASCII.GetBytes("PV").ToList();  // PV (Current value) command
-
+        private readonly byte EOT = 0x04;                                               // End of Transmission
+        private readonly byte STX = 0x02;                                               // Start of text
+        private readonly byte ETX = 0x03;                                               // End of text
+        private readonly byte ENQ = 0x05;                                               // Enquire
+        private readonly List<byte> ADR_1 = Encoding.ASCII.GetBytes("0011").ToList();   // Instrument address 1
+        private readonly List<byte> START = Encoding.ASCII.GetBytes("#30001").ToList(); // Start
+        private readonly byte START_BCC = 0x12;                                         // Start checksum
+        private static readonly byte ACK = 0x06;                                        // Positive acknowledge
+        private static readonly byte NAK = 0x15;                                        // Negative acknowledge
+        private readonly List<byte> PV = Encoding.ASCII.GetBytes("PV").ToList();        // PV (Current value)
+        private readonly List<byte> RUNNING = Encoding.ASCII.GetBytes("#3").ToList();        // Is the rework station currently running a program
         public Pc900Command StartCommand(string programId)
         {
             var commandsList = new List<List<byte>> { GenerateCommandWithBcc(ADR_1, START) };
@@ -71,6 +71,24 @@ namespace achiir6500.server
                 {
                     int readValue = int.Parse(Encoding.ASCII.GetString(commandResponse.GetRange(3, 4).ToArray()));
                     return new GetCurrentValueCommandResponse(readValue);
+                };
+            return handleResponse;
+        }
+
+        public Pc900Command CurrentlyRunningCommand()
+        {
+            var commandsList = new List<List<byte>> { GenerateEnquiryCommand(ADR_1, RUNNING) };
+
+            return new Pc900Command(commandsList, CurrentlyRunningCommandResponseDelegate());
+        }
+
+        public static Func<List<byte>, CurrentlyRunningCommandResponse> CurrentlyRunningCommandResponseDelegate()
+        {
+            Func<List<byte>, CurrentlyRunningCommandResponse> handleResponse =
+                commandResponse =>
+                {
+                    bool running = Convert.ToBoolean(Convert.ToByte(Encoding.ASCII.GetString(commandResponse.GetRange(3, 4).ToArray()).Trim()));
+                    return new CurrentlyRunningCommandResponse(running);
                 };
             return handleResponse;
         }

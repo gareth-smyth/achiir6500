@@ -36,6 +36,20 @@ namespace achiir6500.server
             return ((GetCurrentValueCommandResponse)responses[0]).Value;
         }
 
+        public bool ProgramRunning()
+        {
+            var port = CreateAndOpenPort();
+            var pc900Translator = new Pc900Translator();
+
+            Console.WriteLine("Sending Currently Running command");
+            var command = pc900Translator.CurrentlyRunningCommand();
+            var responses = ExecuteCommand(command, port);
+
+            port.Close();
+
+            return ((CurrentlyRunningCommandResponse)responses[0]).Running;
+        }
+
         public void LoadRun(Pc900Program program)
         {
             var port = CreateAndOpenPort();

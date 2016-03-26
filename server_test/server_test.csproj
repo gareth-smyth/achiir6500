@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchiIr500ServerTest.cs" />
+    <Compile Include="Pc900TranslateCurrentlyRunningTest.cs" />
     <Compile Include="TestServerConfig.cs" />
     <Compile Include="TestNancyBootstraper.cs" />
     <Compile Include="Pc900TranslateGetCurrentValueTest.cs" />

@@ -6,5 +6,6 @@ namespace achiir6500.server
     {
         Pc900ProgramRun Start(Pc900Program program);
         int GetCurrentValue();
+        bool ProgramRunning();
     }
 }

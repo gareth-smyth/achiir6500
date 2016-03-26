@@ -5,17 +5,25 @@ namespace achiir6500.server_mock
 {
     public class MockReworkStation : IReworkStation
     {
-        private int _currentRunCount;
+        private int _currentRunTemperature;
+        private int _currentRunCounter;
 
         public Pc900ProgramRun Start(Pc900Program program)
         {
-            _currentRunCount = 0;
+            _currentRunTemperature = 0;
+            _currentRunCounter = 0;
             return new Pc900ProgramRun(program.id);
         }
 
         public int GetCurrentValue()
         {
-            return _currentRunCount+= new Random().Next(0, 50);
+            _currentRunCounter++;
+            return _currentRunTemperature+= new Random().Next(0, 50);
+        }
+
+        public bool ProgramRunning()
+        {
+            return _currentRunCounter < 10;
         }
     }
 }

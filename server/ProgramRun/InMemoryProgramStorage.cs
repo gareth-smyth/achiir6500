@@ -20,5 +20,10 @@ namespace achiir6500.server
         {
             _programRuns.Add(programRun);
         }
+
+        public void ProgramStopped()
+        {
+            _programRuns[0].finished = true;
+        }
     }
 }

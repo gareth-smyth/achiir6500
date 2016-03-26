@@ -10,6 +10,7 @@ namespace achiir6500.server
         public List<Pc900ProgramRunDataPoint> data_points;
         public int end_point;
         public int initial_point = 1;
+        public bool finished = false;
 
         public Pc900ProgramRun(string programId)
         {

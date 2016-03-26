@@ -84,6 +84,7 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Programs\InMemoryProgramStorage.cs" />
     <Compile Include="Programs\IProgramStorage.cs" />
+    <Compile Include="ReworkStation\GetCurrentValueCommandResponse.cs" />
     <Compile Include="ReworkStation\IReworkStation.cs" />
     <Compile Include="Programs\IsolatedStorageProgramStorage.cs" />
     <Compile Include="ProgramRun\Pc900ProgramRun.cs" />
@@ -95,7 +96,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\ProductionNancyBootstraper.cs" />
     <Compile Include="ReworkStation\Pc900Command.cs" />
-    <Compile Include="ReworkStation\GetCurrentValueCommandResponse.cs" />
+    <Compile Include="ReworkStation\CurrentlyRunningCommandResponse.cs" />
     <Compile Include="ReworkStation\StartCommandResponse.cs" />
   </ItemGroup>
   <ItemGroup>

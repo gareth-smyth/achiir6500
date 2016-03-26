@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Nancy;
 using Nancy.ModelBinding;
@@ -51,7 +52,14 @@ namespace achiir6500.server
 
         public void PollWorker(object state)
         {
-            _programRunStorage.AddToCurrentProgram(_reworkStation.GetCurrentValue());
+            if (_reworkStation.ProgramRunning())
+            {
+                _programRunStorage.AddToCurrentProgram(_reworkStation.GetCurrentValue());
+            }
+            else
+            { 
+                _programRunStorage.ProgramStopped();
+            }
         }
     }
 }

@@ -115,6 +115,17 @@ namespace achiir6500.server_test
             }
         }
 
+        [Test]
+        public void ShouldReturnProgramRunDataIndicatingThatTheRunHasFinished()
+        {
+            StartProgram();
+            Thread.Sleep(1250);
+            var httpResponseMessage = _client.GetAsync("/current-run").Result;
+            var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+
+            Assert.That(results.finished.Value, Is.True);
+        }
+
         private HttpResponseMessage StartProgram()
         {
             LoadProgram();

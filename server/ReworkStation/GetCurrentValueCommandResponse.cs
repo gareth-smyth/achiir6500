@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace achiir6500.server
+﻿namespace achiir6500.server
 {
     public class GetCurrentValueCommandResponse : CommandResponse
     {
