@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using achiir6500.server;
-using achiir6500.server_mock;
 using Newtonsoft.Json;
 
 namespace achiir6500.server_test
@@ -87,14 +86,33 @@ namespace achiir6500.server_test
         }
 
         [Test]
-        public void ShouldRecordCurrentProgramRunAfterStartingProgram()
+        public void ShouldReturnCurrentProgramRunAfterStartingProgram()
         {
             StartProgram();
-            Thread.Sleep(550);
-            var firstResults = JsonConvert.DeserializeObject<dynamic>(_client.GetAsync("/current-run").Result.Content.ReadAsStringAsync().Result);
-            Thread.Sleep(550);
-            var secondResults = JsonConvert.DeserializeObject<dynamic>(_client.GetAsync("/current-run").Result.Content.ReadAsStringAsync().Result);
-            Assert.That(secondResults.data_points.Count, Is.GreaterThan(firstResults.data_points.Count));
+            Thread.Sleep(350);
+            var httpResponseMessage = _client.GetAsync("/current-run").Result;
+            var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+
+            Assert.That(results.data_points.Count, Is.GreaterThan(1));
+            for (var dataPoint = 0; dataPoint < results.data_points.Count; dataPoint++)
+            {
+                Assert.That(results.data_points[dataPoint].index.Value, Is.EqualTo(dataPoint+1));
+            }
+        }
+
+        [Test]
+        public void ShouldReturnProgramRunDataPastACertainPointWhenRequested()
+        {
+            StartProgram();
+            Thread.Sleep(750);
+            var httpResponseMessage = _client.GetAsync("/current-run/after-point/3").Result;
+            var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+
+            Assert.That(results.data_points.Count, Is.GreaterThan(1));
+            for (var dataPoint = 4; dataPoint <= results.data_points.Count; dataPoint++)
+            {
+                Assert.That(results.data_points[dataPoint-4].index.Value, Is.EqualTo(dataPoint));
+            }
         }
 
         private HttpResponseMessage StartProgram()

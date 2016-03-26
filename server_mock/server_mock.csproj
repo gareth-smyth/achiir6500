@@ -52,7 +52,7 @@
     <Compile Include="MockReworkStation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestNancyBootstraper.cs" />
+    <Compile Include="MockNancyBootstraper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\server\server.csproj">

@@ -5,13 +5,14 @@ using Nancy.TinyIoc;
 
 namespace achiir6500.server_mock
 {
-    public class TestNancyBootstraper : DefaultNancyBootstrapper
+    public class MockNancyBootstraper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IReworkStation, MockReworkStation>().AsSingleton();
             container.Register<IProgramStorage, InMemoryProgramStorage>().AsSingleton();
             container.Register<IProgramRunStorage, InMemoryProgramRunStorage>().AsSingleton();
+            container.Register<IServerConfig, StaticServerConfig>().AsSingleton();
 
             pipelines.AfterRequest += ctx =>
             {

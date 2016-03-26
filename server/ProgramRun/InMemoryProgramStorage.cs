@@ -13,7 +13,7 @@ namespace achiir6500.server
 
         public void AddToCurrentProgram(int value)
         {
-            _programRuns[0].data_points.Add(new Pc900ProgramRunDataPoint(value));
+            _programRuns[0].AddDataPoint(value);
         }
 
         public void AddProgramRun(Pc900ProgramRun programRun)

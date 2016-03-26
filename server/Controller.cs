@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Nancy;
 using Nancy.ModelBinding;
 using Newtonsoft.Json.Linq;
-using Nancy.Extensions;
 
 namespace achiir6500.server
 {
@@ -14,7 +10,7 @@ namespace achiir6500.server
     {
         private Timer _poller;
 
-        public Controller(IReworkStation reworkStation, IProgramStorage programStorage, IProgramRunStorage programRunStorage)
+        public Controller(IReworkStation reworkStation, IProgramStorage programStorage, IProgramRunStorage programRunStorage, IServerConfig serverConfig)
         {
             Get["/programs"] = _ => JArray.FromObject(programStorage.GetPrograms()).ToString();
             Post["/programs"] = _ =>
@@ -33,10 +29,11 @@ namespace achiir6500.server
                 var programRun = reworkStation.Start(program);
                 programRunStorage.AddProgramRun(programRun);
 
-                _poller = new Timer(new AchiPoller(reworkStation, programRunStorage).PollWorker, null, 0, 250);
+                _poller = new Timer(new AchiPoller(reworkStation, programRunStorage).PollWorker, null, 0, serverConfig.GetProgramRunPollingIntervalMillis());
 
                 return JObject.FromObject(programRun).ToString();
             };
+            Get["/current-run/after-point/{afterPoint}"] = path => JObject.FromObject(programRunStorage.GetProgramRuns()[0].CreatePartial(int.Parse(path.afterPoint.Value))).ToString();
             Get["/current-run"] = _ => JObject.FromObject(programRunStorage.GetProgramRuns()[0]).ToString();
         }
     }
@@ -44,12 +41,12 @@ namespace achiir6500.server
     internal class AchiPoller
     {
         private readonly IProgramRunStorage _programRunStorage;
-        private IReworkStation _reworkStation;
+        private readonly IReworkStation _reworkStation;
 
         public AchiPoller(IReworkStation reworkStation, IProgramRunStorage programRunStorage)
         {
-            this._reworkStation = reworkStation;
-            this._programRunStorage = programRunStorage;
+            _reworkStation = reworkStation;
+            _programRunStorage = programRunStorage;
         }
 
         public void PollWorker(object state)

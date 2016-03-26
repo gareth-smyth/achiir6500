@@ -9,7 +9,7 @@ namespace achiir6500.server
     {
         public static void Main()
         {
-            new AchiIr500Server(new MyNancyBootstraper()).Start();
+            new AchiIr500Server(new ProductionNancyBootstraper()).Start();
             Console.ReadLine();
         }
     }

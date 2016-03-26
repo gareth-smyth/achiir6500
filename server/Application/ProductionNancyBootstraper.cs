@@ -4,13 +4,14 @@ using Nancy.TinyIoc;
 
 namespace achiir6500.server
 {
-    public class MyNancyBootstraper : DefaultNancyBootstrapper
+    public class ProductionNancyBootstraper : DefaultNancyBootstrapper
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             container.Register<IReworkStation, ReworkStation>().AsSingleton();
             container.Register<IProgramStorage, IsolatedStorageProgramStorage>().AsSingleton();
             container.Register<IProgramRunStorage, InMemoryProgramRunStorage>().AsSingleton();
+            container.Register<IServerConfig, StaticServerConfig>().AsSingleton();
 
             pipelines.AfterRequest += ctx =>
             {

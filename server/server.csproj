@@ -75,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\AchiIr500Server.cs" />
+    <Compile Include="Application\IServerConfig.cs" />
+    <Compile Include="Application\StaticServerConfig.cs" />
     <Compile Include="ProgramRun\InMemoryProgramStorage.cs" />
     <Compile Include="ProgramRun\IProgramStorage.cs" />
     <Compile Include="ProgramRun\Pc900ProgramRunDataPoint.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="ReworkStation\ReworkStation.cs" />
     <Compile Include="Application\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Application\MyNancyBootstraper.cs" />
+    <Compile Include="Application\ProductionNancyBootstraper.cs" />
     <Compile Include="ReworkStation\Pc900Command.cs" />
     <Compile Include="ReworkStation\GetCurrentValueCommandResponse.cs" />
     <Compile Include="ReworkStation\StartCommandResponse.cs" />
