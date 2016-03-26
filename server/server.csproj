@@ -49,6 +49,9 @@
   <PropertyGroup>
     <StartupObject>achiir6500.server.Server</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
@@ -72,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\AchiIr500Server.cs" />
+    <Compile Include="ProgramRun\InMemoryProgramStorage.cs" />
+    <Compile Include="ProgramRun\IProgramStorage.cs" />
+    <Compile Include="ProgramRun\Pc900ProgramRunDataPoint.cs" />
     <Compile Include="ReworkStation\CommandResponse.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Programs\InMemoryProgramStorage.cs" />
@@ -113,17 +119,19 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo change directory to $(SolutionDir)web_gui
-cd $(SolutionDir)web_gui
-echo copy package.json  $(TargetDir)content\
-copy package.json $(TargetDir)content\
-echo copying content
-xcopy /E /R /Y build $(TargetDir)content\build\
-copy index.html $(TargetDir)content\index.html
-echo install production modules
-npm install --production --prefix $(TargetDir)content\
-echo delete package.json
-del $(TargetDir)content\package.json</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+  echo change directory to $(SolutionDir)web_gui 
+  cd $(SolutionDir)web_gui
+  echo copy package.json  $(TargetDir)content\
+  copy package.json $(TargetDir)content\
+  echo copying content
+  xcopy /E /R /Y build $(TargetDir)content\build\
+  copy index.html $(TargetDir)content\index.html
+  echo install production modules
+  npm install --production --prefix $(TargetDir)content\
+  echo delete package.json
+  del $(TargetDir)content\package.json
+)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

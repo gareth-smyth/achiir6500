@@ -4,8 +4,10 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using achiir6500.server;
 using achiir6500.server_mock;
+using Newtonsoft.Json;
 
 namespace achiir6500.server_test
 {
@@ -64,11 +66,7 @@ namespace achiir6500.server_test
         [Test]
         public void ShouldInsertProgram()
         {
-            Pc900ProgramStep[] steps = new Pc900ProgramStep[1];
-            steps[0] = new Pc900ProgramStep(10, 20, 40);
-            Pc900Program pc900Program = new Pc900Program("new_id", "new name", 85, steps);
-            Pc900Program[] programs = new Pc900Program[] { pc900Program };
-            HttpResponseMessage response = _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json")).Result;
+            HttpResponseMessage response = LoadProgram();
             Assert.That(response.IsSuccessStatusCode, Is.True);
 
             response = _client.GetAsync("/programs").Result;
@@ -80,17 +78,41 @@ namespace achiir6500.server_test
         [Test]
         public void ShouldStartProgram()
         {
+            var response = StartProgram();
+
+            var responseBody = response.Content.ReadAsStringAsync().Result;
+            Assert.That(response.IsSuccessStatusCode, Is.True);
+            Assert.That(responseBody, Contains.Substring(@"""program_id"": ""new_id"""));
+            Assert.That(responseBody, Contains.Substring(@"""id"": "));
+        }
+
+        [Test]
+        public void ShouldRecordCurrentProgramRunAfterStartingProgram()
+        {
+            StartProgram();
+            Thread.Sleep(550);
+            var firstResults = JsonConvert.DeserializeObject<dynamic>(_client.GetAsync("/current-run").Result.Content.ReadAsStringAsync().Result);
+            Thread.Sleep(550);
+            var secondResults = JsonConvert.DeserializeObject<dynamic>(_client.GetAsync("/current-run").Result.Content.ReadAsStringAsync().Result);
+            Assert.That(secondResults.data_points.Count, Is.GreaterThan(firstResults.data_points.Count));
+        }
+
+        private HttpResponseMessage StartProgram()
+        {
+            LoadProgram();
+            return _client.PostAsync("/start-program/new_id", new StringContent("")).Result;
+        }
+
+        private HttpResponseMessage LoadProgram()
+        {
             Pc900ProgramStep[] steps = new Pc900ProgramStep[1];
             steps[0] = new Pc900ProgramStep(10, 20, 40);
             Pc900Program pc900Program = new Pc900Program("new_id", "new name", 85, steps);
             Pc900Program[] programs = { pc900Program };
-            HttpResponseMessage response = _client.PostAsync("/programs", new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json")).Result;
-
-            response = _client.PostAsync("/start-program/new_id", new StringContent("")).Result;
-            String responseBody = response.Content.ReadAsStringAsync().Result;
-            Assert.That(response.IsSuccessStatusCode, Is.True);
-            Assert.That(responseBody, Contains.Substring(@"""program_id"": ""new_id"""));
-            Assert.That(responseBody, Contains.Substring(@"""id"": "));
+            HttpResponseMessage response =
+                _client.PostAsync("/programs",
+                    new StringContent(JArray.FromObject(programs).ToString(), Encoding.UTF8, "application/json")).Result;
+            return response;
         }
     }
 }

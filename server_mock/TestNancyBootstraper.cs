@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using achiir6500.server;
-using achiir6500.server_mock;
+﻿using achiir6500.server;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
@@ -16,8 +11,9 @@ namespace achiir6500.server_mock
         {
             container.Register<IReworkStation, MockReworkStation>().AsSingleton();
             container.Register<IProgramStorage, InMemoryProgramStorage>().AsSingleton();
+            container.Register<IProgramRunStorage, InMemoryProgramRunStorage>().AsSingleton();
 
-            pipelines.AfterRequest += (ctx) =>
+            pipelines.AfterRequest += ctx =>
             {
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers", "pragma,cache-control,content-type");
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");

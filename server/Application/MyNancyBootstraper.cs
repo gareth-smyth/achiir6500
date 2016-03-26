@@ -10,6 +10,7 @@ namespace achiir6500.server
         {
             container.Register<IReworkStation, ReworkStation>().AsSingleton();
             container.Register<IProgramStorage, IsolatedStorageProgramStorage>().AsSingleton();
+            container.Register<IProgramRunStorage, InMemoryProgramRunStorage>().AsSingleton();
 
             pipelines.AfterRequest += ctx =>
             {

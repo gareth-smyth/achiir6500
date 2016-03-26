@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace achiir6500.server
 {
@@ -6,11 +7,13 @@ namespace achiir6500.server
     {
         public string id;
         public string program_id;
+        public List<Pc900ProgramRunDataPoint> data_points;
 
-        public Pc900ProgramRun(string program_id)
+        public Pc900ProgramRun(string programId)
         {
             this.id = Guid.NewGuid().ToString();
-            this.program_id = program_id;
+            this.program_id = programId;
+            this.data_points = new List<Pc900ProgramRunDataPoint>();
         }
     }
 }
