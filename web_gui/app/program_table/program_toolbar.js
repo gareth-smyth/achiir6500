@@ -2,21 +2,27 @@ var React = require('react');
 
 module.exports = React.createClass({
     render: function () {
-        var cantRunToolTip = this.props.hasChanges ? "Cannot run any porgrams until all changes are saved." : this.props.selectedRowQueuedDelete ? 'Cannot run program being deleted.' : 'No program selected to run.';
+        var programRunningMessage = 'Cannot perform any actions while a program is running.';
+
+        var cantRunToolTip = this.props.programRunning ? programRunningMessage : (this.props.hasChanges ? "Cannot run any porgrams until all changes are saved." : this.props.selectedRowQueuedDelete ? 'Cannot run program being deleted.' : 'No program selected to run.');
         var runToolTip = "Send the selected program to the reflow station.";
-        var runDisabled = !this.props.hasSelectedRow || this.props.selectedRowQueuedDelete || this.props.hasChanges;
+        var runDisabled = !this.props.hasSelectedRow || this.props.selectedRowQueuedDelete || this.props.hasChanges || this.props.programRunning;
 
-        var cantDeleteToolTip = this.props.hasSelectedRow ? 'Selected program already queued for deletion.  Use Save Changes to finish deleting.' : 'No program selected to delete.';
+        var cantDeleteToolTip = this.props.programRunning ? programRunningMessage : (this.props.hasSelectedRow ? 'Selected program already queued for deletion.  Use Save Changes to finish deleting.' : 'No program selected to delete.');
         var deleteToolTip = "Delete the program.  Will only delete locally - use Save Changes to push to the server.";
-        var deleteDisabled = !this.props.hasSelectedRow || this.props.selectedRowQueuedDelete;
+        var deleteDisabled = !this.props.hasSelectedRow || this.props.selectedRowQueuedDelete || this.props.programRunning;
 
-        var cantSaveToolTip = 'No changes to save.';
+        var cantSaveToolTip = this.props.programRunning ? programRunningMessage : 'No changes to save.';
         var saveToolTip = "Save all the changes and deletions to the server.";
-        var saveDisabled = !this.props.hasChanges;
+        var saveDisabled = !this.props.hasChanges || this.props.programRunning;
 
-        var cantResetToolTip = 'No changes to reset.';
+        var cantResetToolTip =  this.props.programRunning ? programRunningMessage : 'No changes to reset.';
         var resetToolTip = "Reset all changes made that have not been saved.";
-        var resetDisabled = !this.props.hasChanges;
+        var resetDisabled = !this.props.hasChanges || this.props.programRunning;
+
+        var cantAddProgramToolTip = programRunningMessage;
+        var addProgramToolTip = "Add a new program.";
+        var addProgramDisabled = this.props.programRunning;
 
         return <div>
             <input className={"btn"}  type="button" value="Run Program"
@@ -24,11 +30,11 @@ module.exports = React.createClass({
                    onClick={this.props.onRun} />
             - -
             <input className={"btn"} type="button" value="Delete Program"
-                   disabled={!this.props.hasSelectedRow} title={deleteDisabled ? cantDeleteToolTip : deleteToolTip}
+                   disabled={deleteDisabled} title={deleteDisabled ? cantDeleteToolTip : deleteToolTip}
                    onClick={this.props.onDeleteSelected}/>
 
             <input className={"btn"} type="button" value="Add Program"
-                   disabled={false} title="Add new program"
+                   disabled={addProgramDisabled} title={addProgramDisabled ? cantAddProgramToolTip : addProgramToolTip}
                    onClick={this.props.onAddProgram}/>
             - -
             <input className={"btn"} type="button" value="Save Changes"

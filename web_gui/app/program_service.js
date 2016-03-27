@@ -12,12 +12,25 @@ module.exports = class ProgramService {
         });
     }
 
+    static getCurrentProgramRun() {
+        return fetch("http://localhost:9858/current-run").then(function (response) {
+            if (response.status == 200) {
+                return response.json();
+            } else {
+                console.log("Error getting programs run: Status:" + status + " Body:" + response.body);
+                return {finished: true};
+            }
+        });
+    }
+
     static runProgram(programId) {
         return fetch('http://localhost:9858/start-program/' + programId, {method: 'POST'}).then(function (response) {
             if (response.status == 200) {
                 console.log("Ran program:" + programId);
+                return true;
             } else {
                 console.log("Error running program: Status:" + status + " Body:" + response.body);
+                return false;
             }
         });
     }

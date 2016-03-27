@@ -78,27 +78,29 @@ module.exports = React.createClass({
     },
 
     // Handling state
-    updateState: function (currentState, rows = null, selectedRow = null, callback = null) {
+    updateState: function (currentState, rows = null, selectedRow = null, callback = null, programRunning = null) {
         var newRows = rows ? rows : currentState.rows;
         var newSelectedRow = selectedRow ? selectedRow : currentState.selectedRow;
         var hasChanges = newRows.find((row)=> row.dirty == true || row.queueDelete == true) ? true : false;
+        var programRunning = programRunning!=null ? programRunning : currentState.programRunning;
 
         this.setState({
                 rows: newRows,
                 selectedRow: newSelectedRow,
-                hasChanges: hasChanges
+                hasChanges: hasChanges,
+                programRunning: programRunning
             },
             callback);
     },
 
     // React
     getInitialState: function () {
-        return {rows: [], selectedRow: null, hasChanges: false};
+        return {rows: [], selectedRow: null, hasChanges: false, programRunning: false};
     },
 
     componentWillReceiveProps: function (nextProps) {
         var mergedRows = this.mergeRowChanges(this.state.rows, this.getRowsFromPrograms(nextProps.programs));
-        this.updateState(this.state, mergedRows);
+        this.updateState(this.state, mergedRows, null, null, nextProps.programRunning);
     },
 
     // React data grid
@@ -219,19 +221,19 @@ module.exports = React.createClass({
                 width: 210,
                 fixed: true,
                 locked: true,
-                editable: true
+                editable: !this.state.programRunning
             },
             {
                 key: 'loop_counter',
                 name: 'Loop',
                 width: 60,
-                editable: true
+                editable: !this.state.programRunning
             }
         ];
         for (var step_num = 1; step_num < 9; step_num++) {
             step_headings.map(function (step_part) {
-                columns.push({key: step_part + step_num, name: step_part, width: 60, editable: true});
-            });
+                columns.push({key: step_part + step_num, name: step_part, width: 60, editable: !this.state.programRunning});
+            }.bind(this));
         }
 
         return (<div className={"tablediv"}>
@@ -244,6 +246,7 @@ module.exports = React.createClass({
                 hasChanges={this.state.hasChanges}
                 hasSelectedRow={this.state.selectedRow ? true : false}
                 selectedRowQueuedDelete={(this.state.selectedRow && this.state.selectedRow.queueDelete) ? true : false}
+                programRunning={this.state.programRunning}
             />
             <ReactDataGrid
                 columns={columns}
@@ -256,7 +259,8 @@ module.exports = React.createClass({
                 enableCellSelect={true}
                 onRowSelect={this.onRowSelect}
                 onRowUpdated={this.onRowUpdated}
-                rowRenderer={RowRenderer}/>
+                rowRenderer={RowRenderer}
+            />
         </div>);
     }
 });

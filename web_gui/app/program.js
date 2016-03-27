@@ -5,7 +5,7 @@ var ProgramService = require('./program_service.js');
 
 module.exports = React.createClass({
     getInitialState: function () {
-        return {programs: [], selectedProgram: 0 };
+        return {programs: [], selectedProgram: 0, programRunning: false };
     },
 
     componentDidMount: function () {
@@ -30,7 +30,22 @@ module.exports = React.createClass({
     },
 
     runProgram: function (programId) {
-        ProgramService.runProgram(programId);
+        if(ProgramService.runProgram(programId)){
+            this.state.programRunning = true;
+            this.setState(this.state, function(){
+                (function poll(){
+                    var poller = setInterval(function(){
+                        ProgramService.getCurrentProgramRun().then(function(programRun){
+                            if(programRun.finished){
+                                clearInterval(poller);
+                                this.state.programRunning = false;
+                                this.setState(this.state);
+                            }
+                        }.bind(this));
+                    }.bind(this), 5000);
+                }.bind(this))();
+            }.bind(this))
+        }
     },
 
     selectProgram: function(programId){
@@ -51,6 +66,7 @@ module.exports = React.createClass({
                 onSave={this.savePrograms}
                 onRun={this.runProgram}
                 onSelectProgram={this.selectProgram}
+                programRunning={this.state.programRunning}
             />
         </div>;
     }

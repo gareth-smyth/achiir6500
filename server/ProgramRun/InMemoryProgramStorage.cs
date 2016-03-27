@@ -18,7 +18,15 @@ namespace achiir6500.server
 
         public void AddProgramRun(Pc900ProgramRun programRun)
         {
-            _programRuns.Add(programRun);
+            if (_programRuns.Count == 0)
+            {
+                _programRuns.Add(programRun);
+            }
+            else
+            {
+                _programRuns[0] = programRun;
+                _programRuns[0].finished = false;
+            }
         }
 
         public void ProgramStopped()
