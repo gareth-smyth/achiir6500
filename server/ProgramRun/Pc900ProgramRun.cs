@@ -24,7 +24,7 @@ namespace achiir6500.server
             lock (data_points)
             {
                 end_point++;
-                data_points.Add(new Pc900ProgramRunDataPoint(end_point, value));
+                data_points.Add(new Pc900ProgramRunDataPoint(end_point, value, DateTime.Now));
             }
         }
 
@@ -33,7 +33,7 @@ namespace achiir6500.server
             lock (data_points)
             {
                 end_point++;
-                data_points.Add(new Pc900ProgramRunDataPoint(end_point, dataPoint.value));
+                data_points.Add(new Pc900ProgramRunDataPoint(end_point, dataPoint.value, dataPoint.timestamp));
             }
         }
 

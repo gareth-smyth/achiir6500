@@ -18,12 +18,12 @@ namespace achiir6500.server_mock
         public int GetCurrentValue()
         {
             _currentRunCounter++;
-            return _currentRunTemperature+= new Random().Next(0, 50);
+            return _currentRunTemperature+= (new Random().Next(0, 4) -1);
         }
 
         public bool ProgramRunning()
         {
-            return _currentRunCounter < 10;
+            return _currentRunCounter < 1000;
         }
     }
 }
