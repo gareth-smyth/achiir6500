@@ -123,17 +123,16 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-  echo change directory to $(SolutionDir)web_gui 
-  cd $(SolutionDir)web_gui
-  echo copy package.json  $(TargetDir)content\
-  copy package.json $(TargetDir)content\
+ cd $(SolutionDir)web_gui\
+  echo copy ./package.json  $(TargetDir)content\
+  copy $(SolutionDir)web_gui\package.json $(TargetDir)content\
   echo copying content
-  xcopy /E /R /Y build $(TargetDir)content\build\
-  copy index.html $(TargetDir)content\index.html
+  xcopy /E /R /Y $(SolutionDir)web_gui\build $(TargetDir)content\build\
+  copy $(SolutionDir)web_gui\index.html $(TargetDir)content\index.html
   echo install production modules
   npm install --production --prefix $(TargetDir)content\
-  echo delete package.json
-  del $(TargetDir)content\package.json
+  echo delete $(SolutionDir)web_gui\package.json
+  echo del $(TargetDir)content\package.json
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

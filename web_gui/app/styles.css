@@ -1,3 +1,5 @@
 @import "../node_modules/react-data-grid/themes/react-data-grid.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap-theme.min.css";
+@import '../node_modules/react-s-alert/dist/s-alert-default.css';
+@import '../node_modules/react-s-alert/dist/s-alert-css-effects/stackslide.css';
 @import "./css/style.css";

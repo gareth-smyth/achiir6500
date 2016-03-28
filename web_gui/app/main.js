@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Program = require('./program.js');
+var Alert = require('react-s-alert').default;
 require('./styles.css');
 
 ReactDOM.render(
@@ -16,6 +17,7 @@ ReactDOM.render(
         <div className="footer">
             See <a href="https://github.com/gareth-smyth/achiir6500">AchiIr6500</a>
         </div>
+        <Alert stack={true} position={"top"} effect={"stackslide"} timeout={"none"}/>
     </div>,
     document.getElementById('control-station')
 );
