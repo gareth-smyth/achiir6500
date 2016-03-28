@@ -6,7 +6,7 @@ require('./styles.css');
 ReactDOM.render(
     <div>
         <div className="header">
-            Achi Ir 6500 Control Station 0.2
+            Achi Ir 6500 Control Station 0.3
         </div>
         <div className="contain">
             <div className="content">
