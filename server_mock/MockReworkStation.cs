@@ -23,7 +23,7 @@ namespace achiir6500.server_mock
 
         public bool ProgramRunning()
         {
-            return _currentRunCounter < 1000;
+            return _currentRunCounter < 10;
         }
     }
 }

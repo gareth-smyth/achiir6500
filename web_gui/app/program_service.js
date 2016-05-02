@@ -25,7 +25,7 @@ module.exports = class ProgramService {
                     return response.json();
                 } else {
                     Alert.error("Error returned from server during run.  See the log for details.");
-                    console.log("Error getting program run: Status:" + status + " Body:" + response.body);
+                    console.log("Error getting program run: Status:" + status + " Body:" + response.body.text());
                     return {finished: true};
                 }
             })
@@ -41,7 +41,7 @@ module.exports = class ProgramService {
                     return true;
                 } else {
                     Alert.error("Error returned from server when running program.  See the log for details.");
-                    console.log("Error running program: Status:" + status + " Body:" + response.body);
+                    console.log("Error running program: Status:" + status + " Body:" + response.body.text());
                     return false;
                 }
             })
@@ -64,7 +64,7 @@ module.exports = class ProgramService {
                     console.log("Saved programs:" + JSON.stringify(programs));
                 } else {
                     Alert.error("Error returned from server when saving programs.  See the log for details.");
-                    console.log("Error saving programs: Status:" + status + " Body:" + response.body);
+                    console.log("Error saving programs: Status:" + status + " Body:" + response.body.text());
                 }
             })
             .catch(function () {
@@ -85,7 +85,7 @@ module.exports = class ProgramService {
                     console.log("Deleted programs:" + JSON.stringify(programs));
                 } else {
                     Alert.error("Error returned from server when deleting programs.  See the log for details.");
-                    console.log("Error deleting programs: Status:" + status + " Body:" + response.body);
+                    console.log("Error deleting programs: Status:" + status + " Body:" + response.body.text());
                 }
             })
             .catch(function () {

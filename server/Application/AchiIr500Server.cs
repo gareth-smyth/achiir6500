@@ -19,6 +19,7 @@ namespace achiir6500.server{
         public void Start()
         {
             host.Start();
+            Console.WriteLine("Achi IR6500 Server started.  Please open your browser at http://localhost:9858.");
         }
 
         public void Stop()

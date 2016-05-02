@@ -13,19 +13,26 @@ namespace achiir6500.server
 
         public Controller(IReworkStation reworkStation, IProgramStorage programStorage, IProgramRunStorage programRunStorage, IServerConfig serverConfig)
         {
-            Get["/programs"] = _ => JArray.FromObject(programStorage.GetPrograms()).ToString();
+            Get["/programs"] = _ =>
+            {
+                Console.WriteLine("Getting programs.");
+                return JArray.FromObject(programStorage.GetPrograms()).ToString();
+            };
             Post["/programs"] = _ =>
             {
+                Console.WriteLine("Updating programs.");
                 programStorage.UpdatePrograms(this.Bind<List<Pc900Program>>());
                 return @"{""status"":""OK""}";
             };
             Post["/delete-programs"] = _ =>
             {
+                Console.WriteLine("Deleting programs.");
                 programStorage.DeletePrograms(this.Bind<List<Pc900Program>>());
                 return @"{""status"":""OK""}";
             };
             Post["/start-program/{programId}"] = path =>
             {
+                Console.WriteLine("Starting program "+ path.programId.Value + ".");
                 Pc900Program program = programStorage.GetProgram(path.programId.Value);
                 var programRun = reworkStation.Start(program);
                 programRunStorage.AddProgramRun(programRun);
