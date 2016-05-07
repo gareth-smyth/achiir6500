@@ -5,7 +5,9 @@ module.exports = function (grunt) {
         browserify: {
             dev: {
                 options: {
-                    debug: true,
+                    browserifyOptions: {
+                        debug: true
+                    },
                     transform: ["browserify-css", ["babelify", {presets: ['react', 'es2015']}]]
                 },
                 files: {
@@ -14,7 +16,9 @@ module.exports = function (grunt) {
             },
             build: {
                 options: {
-                    debug: false,
+                    browserifyOptions: {
+                        debug: false
+                    },
                     transform: ["browserify-css", ["babelify", {presets: ['react', 'es2015']}]]
                 },
                 files: {
@@ -31,6 +35,34 @@ module.exports = function (grunt) {
             options: {
                 nospawn: true
             }
+        },
+
+        babel: {
+            options: {
+                sourceMap: true,
+                presets: ['babel-preset-es2015', 'babel-preset-react']
+            },
+            dist: {
+                files: {
+                    'dist/app.js': 'src/app.js'
+                }
+            }
+        },
+
+        jest: {
+            options: {
+                config: {
+                    testDirectoryName: "spec",
+                    rootDir: ".",
+                    name:"",
+                    scriptPreprocessor: "<rootDir>/node_modules/babel-jest",
+                    unmockedModulePathPatterns: [
+                        "<rootDir>/node_modules/react",
+                        "<rootDir>/node_modules/react-dom",
+                        "<rootDir>/node_modules/react-addons-test-utils"
+                    ]
+                }
+            }
         }
     });
 
@@ -38,5 +70,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-serve');
     grunt.registerTask('default', ['watch']);
-    grunt.registerTask('build', ['browserify:build']);
-};
+    grunt.registerTask('build', ['browserify:dev']);
+    grunt.loadNpmTasks('grunt-jest');
+}
+;

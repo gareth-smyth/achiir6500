@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDataGrid = require('react-data-grid/addons');
 var ProgramToolbar = require('./program_toolbar.js');
-var uuid = require('uuid');
+var uuid = require('uuid-js');
 
 module.exports = React.createClass({
     // Handling rows
@@ -158,10 +158,16 @@ module.exports = React.createClass({
     },
 
     deleteProgram: function () {
-        var selectedRow = this.state.selectedRow;
+        var selectedRow = this.getRow(this.state.selectedRow.id);
         selectedRow.dirty = false;
         selectedRow.queueDelete = true;
         this.updateState(this.state);
+    },
+    
+    getRow: function(rowId){
+        return this.state.rows.find(function(row){
+            return row.id==rowId;
+        });
     },
 
     updatePrograms: function () {
@@ -182,7 +188,7 @@ module.exports = React.createClass({
         }
 
         var newProgram = {
-            id: uuid.v1(),
+            id: uuid.create(1).toString(),
             name: "New Program",
             loop_counter: 1,
             steps: steps
