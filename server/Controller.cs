@@ -44,7 +44,7 @@ namespace achiir6500.server
                     {
                         _poller.Dispose();
                     }
-                }, null, 0, serverConfig.GetProgramRunPollingIntervalMillis());
+                }, null, 1000, serverConfig.GetProgramRunPollingIntervalMillis());
 
                 return JObject.FromObject(programRun).ToString();
             };
