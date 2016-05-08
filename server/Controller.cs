@@ -33,6 +33,12 @@ namespace achiir6500.server
             Post["/start-program/{programId}"] = path =>
             {
                 Console.WriteLine("Starting program "+ path.programId.Value + ".");
+                var pc900ProgramRuns = programRunStorage.GetProgramRuns();
+                if (pc900ProgramRuns.Count > 0)
+                {
+                    return JObject.FromObject(pc900ProgramRuns[0]).ToString();
+                }
+
                 Pc900Program program = programStorage.GetProgram(path.programId.Value);
                 var programRun = reworkStation.Start(program);
                 programRunStorage.AddProgramRun(programRun);

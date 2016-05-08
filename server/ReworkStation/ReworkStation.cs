@@ -17,19 +17,7 @@ namespace achiir6500.server
             Console.WriteLine("Sending Start command");
             var command = pc900Translator.StartCommand(program.id);
             
-            try
-            {
-                ExecuteCommand(command, port);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-            }
-            finally
-            {
-                port.Close();
-            }
+            ExecuteCommand(command, port);
 
             return new Pc900ProgramRun("1234");
         }
@@ -42,21 +30,7 @@ namespace achiir6500.server
             Console.WriteLine("Sending GetCurrentValue command");
             var command = pc900Translator.GetCurrentValueCommand();
 
-            List<CommandResponse> responses;
-            try
-            {
-                responses = ExecuteCommand(command, port);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return 0;
-            }
-            finally
-            {
-                port.Close();
-            }
+            var responses = ExecuteCommand(command, port);
 
             return ((GetCurrentValueCommandResponse)responses[0]).Value;
         }
@@ -69,21 +43,7 @@ namespace achiir6500.server
             Console.WriteLine("Sending Currently Running command");
             var command = pc900Translator.CurrentlyRunningCommand();
 
-            List<CommandResponse> responses;
-            try
-            {
-                responses = ExecuteCommand(command, port);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return false;
-            }
-            finally
-            {
-                port.Close();
-            }
+            var responses = ExecuteCommand(command, port);
 
             return ((CurrentlyRunningCommandResponse)responses[0]).Running;
         }
@@ -96,46 +56,57 @@ namespace achiir6500.server
             Console.WriteLine("Sending Load commands");
             var command = pc900Translator.LoadCommand(program);
             
-            try
-            {
-                ExecuteCommand(command, port);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-            }
-            finally
-            {
-                port.Close();
-            }
+            ExecuteCommand(command, port);
         }
 
         private static List<CommandResponse> ExecuteCommand(Pc900Command command, SerialPort myPort)
         {
             List <CommandResponse> responses = new List<CommandResponse>();
 
-            foreach (var buffer in command.CommandsList.Select(byteList => byteList.ToArray()))
+            try
             {
-                myPort.Write(buffer, 0, buffer.Length);
-                Console.WriteLine("Sent:" + string.Join(", ", buffer));
-                var readBuffer = ReadBuffer(myPort, command.ExpectedResponseBytes);
-                responses.Add(command.ResponseDelegate(readBuffer.ToList()));
+                foreach (var buffer in command.CommandsList.Select(byteList => byteList.ToArray()))
+                {
+                    myPort.Write(buffer, 0, buffer.Length);
+                    Console.WriteLine("Sent:" + string.Join(", ", buffer));
+                    var readBuffer = ReadBuffer(myPort, command.ExpectedResponseBytes);
+                    responses.Add(command.ResponseDelegate(readBuffer.ToList()));
+                }
+                return responses;
             }
-            return responses;
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                throw;
+            }
+            finally
+            {
+                myPort.Close();
+            }
         }
 
         private static SerialPort CreateAndOpenPort()
         {
-            var myPort = new SerialPort("COM1")
+            SerialPort myPort;
+            try
             {
-                BaudRate = 9600,
-                DtrEnable = true,
-                RtsEnable = true,
-                DataBits = 7,
-                Parity = Parity.Even,
-                StopBits = StopBits.One
-            };
+                myPort = new SerialPort("COM1")
+                {
+                    BaudRate = 9600,
+                    DtrEnable = true,
+                    RtsEnable = true,
+                    DataBits = 7,
+                    Parity = Parity.Even,
+                    StopBits = StopBits.One
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                throw;
+            }
 
             if (myPort.IsOpen == false)
                 myPort.Open();
