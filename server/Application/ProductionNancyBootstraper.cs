@@ -8,6 +8,7 @@ namespace achiir6500.server
     {
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            StaticConfiguration.DisableErrorTraces = false;
             container.Register<IReworkStation, ReworkStation>().AsSingleton();
             container.Register<IProgramStorage, IsolatedStorageProgramStorage>().AsSingleton();
             container.Register<IProgramRunStorage, InMemoryProgramRunStorage>().AsSingleton();

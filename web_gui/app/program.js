@@ -43,7 +43,7 @@ module.exports = React.createClass({
                             this.state.programRun = programRun;
                             this.setState(this.state);
                         }.bind(this));
-                    }.bind(this), 1000);
+                    }.bind(this), 5000);
                 }.bind(this))();
             })
         }

@@ -26,12 +26,12 @@ module.exports = class ProgramService {
                 } else {
                     Alert.error("Error returned from server during run.  See the log for details.");
                     console.log("Error getting program run: Status:" + status + " Body:" + response.body.text());
-                    return {finished: true};
+                    return {finished: false};
                 }
             })
             .catch(function () {
                 Alert.error("Error returned from server during run.  See the log for details.");
-                return {finished: true};
+                return {finished: false};
             });
     }
 

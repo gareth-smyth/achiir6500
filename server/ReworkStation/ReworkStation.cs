@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Threading;
 
 namespace achiir6500.server
 {
@@ -15,9 +16,20 @@ namespace achiir6500.server
 
             Console.WriteLine("Sending Start command");
             var command = pc900Translator.StartCommand(program.id);
-            ExecuteCommand(command, port);
             
-            port.Close();
+            try
+            {
+                ExecuteCommand(command, port);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                port.Close();
+            }
 
             return new Pc900ProgramRun("1234");
         }
@@ -29,9 +41,22 @@ namespace achiir6500.server
 
             Console.WriteLine("Sending GetCurrentValue command");
             var command = pc900Translator.GetCurrentValueCommand();
-            var responses = ExecuteCommand(command, port);
 
-            port.Close();
+            List<CommandResponse> responses;
+            try
+            {
+                responses = ExecuteCommand(command, port);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                return 0;
+            }
+            finally
+            {
+                port.Close();
+            }
 
             return ((GetCurrentValueCommandResponse)responses[0]).Value;
         }
@@ -43,9 +68,22 @@ namespace achiir6500.server
 
             Console.WriteLine("Sending Currently Running command");
             var command = pc900Translator.CurrentlyRunningCommand();
-            var responses = ExecuteCommand(command, port);
 
-            port.Close();
+            List<CommandResponse> responses;
+            try
+            {
+                responses = ExecuteCommand(command, port);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+            finally
+            {
+                port.Close();
+            }
 
             return ((CurrentlyRunningCommandResponse)responses[0]).Running;
         }
@@ -57,9 +95,20 @@ namespace achiir6500.server
 
             Console.WriteLine("Sending Load commands");
             var command = pc900Translator.LoadCommand(program);
-            ExecuteCommand(command, port);
-
-            port.Close();
+            
+            try
+            {
+                ExecuteCommand(command, port);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                port.Close();
+            }
         }
 
         private static List<CommandResponse> ExecuteCommand(Pc900Command command, SerialPort myPort)
@@ -69,7 +118,8 @@ namespace achiir6500.server
             foreach (var buffer in command.CommandsList.Select(byteList => byteList.ToArray()))
             {
                 myPort.Write(buffer, 0, buffer.Length);
-                var readBuffer = ReadBuffer(buffer, myPort);
+                Console.WriteLine("Sent:" + string.Join(", ", buffer));
+                var readBuffer = ReadBuffer(myPort, command.ExpectedResponseBytes);
                 responses.Add(command.ResponseDelegate(readBuffer.ToList()));
             }
             return responses;
@@ -92,12 +142,24 @@ namespace achiir6500.server
             return myPort;
         }
 
-        private static byte[] ReadBuffer(byte[] buffer, SerialPort myPort)
+        private static byte[] ReadBuffer(SerialPort myPort, int numResponseBytes)
         {
-            Console.WriteLine("Sent:" + string.Join(", ", buffer));
-            var readBuffer = new byte[1];
-            myPort.Read(readBuffer, 0, 1);
-            Console.WriteLine(readBuffer[0]);
+            var readBuffer = new byte[numResponseBytes];
+            var bytesRead = 0;
+            while (bytesRead < numResponseBytes)
+            {
+                int bytesToRead = myPort.BytesToRead;
+                if (bytesToRead > 0)
+                {
+                    var partialBuffer = new byte[bytesToRead];
+                    var lastByteIndex = bytesRead;
+                    bytesRead += myPort.Read(partialBuffer, 0, bytesToRead);
+                    Console.WriteLine("Received:" + string.Join(", ", partialBuffer));
+                    Array.Copy(partialBuffer, 0, readBuffer, lastByteIndex, bytesRead);
+                }
+                Thread.Sleep(100);
+            }
+            Console.WriteLine("Received:" + string.Join(", ", readBuffer));
             return readBuffer;
         }
     }

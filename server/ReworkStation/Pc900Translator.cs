@@ -18,12 +18,13 @@ namespace achiir6500.server
         private static readonly byte ACK = 0x06;                                        // Positive acknowledge
         private static readonly byte NAK = 0x15;                                        // Negative acknowledge
         private readonly List<byte> PV = Encoding.ASCII.GetBytes("PV").ToList();        // PV (Current value)
-        private readonly List<byte> RUNNING = Encoding.ASCII.GetBytes("#3").ToList();        // Is the rework station currently running a program
+        private readonly List<byte> RUNNING = Encoding.ASCII.GetBytes("#3").ToList();   // Is the rework station currently running a program
+
         public Pc900Command StartCommand(string programId)
         {
             var commandsList = new List<List<byte>> { GenerateCommandWithBcc(ADR_1, START) };
 
-            return new Pc900Command(commandsList, StartCommandResponseDelegate(programId));
+            return new Pc900Command(commandsList, StartCommandResponseDelegate(programId), 1);
         }
 
         public static Func<List<byte>, StartCommandResponse> StartCommandResponseDelegate(string programId)
@@ -48,7 +49,7 @@ namespace achiir6500.server
                 commandsList.Add(GenerateCommandWithBcc(ADR_1, Dwell(stepIdx, step.dwell)));
             }
 
-            return new Pc900Command(commandsList, LoadCommandResponseDelegate(program));
+            return new Pc900Command(commandsList, LoadCommandResponseDelegate(program), 1);
         }
 
         public static Func<List<byte>, CommandResponse> LoadCommandResponseDelegate(Pc900Program program)
@@ -61,7 +62,7 @@ namespace achiir6500.server
         {
             var commandsList = new List<List<byte>> { GenerateEnquiryCommand(ADR_1, PV) };
 
-            return new Pc900Command(commandsList, GetCurrentValueCommandResponseDelegate());
+            return new Pc900Command(commandsList, GetCurrentValueCommandResponseDelegate(), 10);
         }
 
         public static Func<List<byte>, GetCurrentValueCommandResponse> GetCurrentValueCommandResponseDelegate()
@@ -79,7 +80,7 @@ namespace achiir6500.server
         {
             var commandsList = new List<List<byte>> { GenerateEnquiryCommand(ADR_1, RUNNING) };
 
-            return new Pc900Command(commandsList, CurrentlyRunningCommandResponseDelegate());
+            return new Pc900Command(commandsList, CurrentlyRunningCommandResponseDelegate(), 10);
         }
 
         public static Func<List<byte>, CurrentlyRunningCommandResponse> CurrentlyRunningCommandResponseDelegate()

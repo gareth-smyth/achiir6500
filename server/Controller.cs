@@ -49,7 +49,15 @@ namespace achiir6500.server
                 return JObject.FromObject(programRun).ToString();
             };
             Get["/current-run/after-point/{afterPoint}"] = path => JObject.FromObject(programRunStorage.GetProgramRuns()[0].CreatePartial(int.Parse(path.afterPoint.Value))).ToString();
-            Get["/current-run"] = _ => JObject.FromObject(programRunStorage.GetProgramRuns()[0]).ToString();
+            Get["/current-run"] = _ =>
+            {
+                var pc900ProgramRuns = programRunStorage.GetProgramRuns();
+                if (pc900ProgramRuns.Count > 0)
+                {
+                    return JObject.FromObject(pc900ProgramRuns[0]).ToString();
+                }
+                return JObject.FromObject(new Pc900ProgramRun("1234"));
+            };
         }
     }
 

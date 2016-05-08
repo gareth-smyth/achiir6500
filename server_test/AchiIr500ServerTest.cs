@@ -89,7 +89,7 @@ namespace achiir6500.server_test
         public void ShouldReturnCurrentProgramRunAfterStartingProgram()
         {
             StartProgram();
-            Thread.Sleep(350);
+            Thread.Sleep(3000);
             var httpResponseMessage = _client.GetAsync("/current-run").Result;
             var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
 
@@ -104,7 +104,7 @@ namespace achiir6500.server_test
         public void ShouldReturnProgramRunDataPastACertainPointWhenRequested()
         {
             StartProgram();
-            Thread.Sleep(750);
+            Thread.Sleep(3000);
             var httpResponseMessage = _client.GetAsync("/current-run/after-point/3").Result;
             var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
 
@@ -119,7 +119,7 @@ namespace achiir6500.server_test
         public void ShouldReturnProgramRunDataIndicatingThatTheRunHasFinished()
         {
             StartProgram();
-            Thread.Sleep(1250);
+            Thread.Sleep(5000);
             var httpResponseMessage = _client.GetAsync("/current-run").Result;
             var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
 

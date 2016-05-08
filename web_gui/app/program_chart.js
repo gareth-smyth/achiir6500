@@ -36,13 +36,15 @@ module.exports = React.createClass({
         var data = [];
 
         var lastTimestamp = new Date(0).getTime();
-        programRun.data_points.forEach((data_point)=> {
-            var timestamp = Date.parse(data_point.timestamp);
-            if (timestamp > (lastTimestamp + (this.config.secondsPerTick * 1000))) {
-                data.push(data_point.value);
-                lastTimestamp = timestamp;
-            }
-        });
+        if(programRun.data_points) {
+            programRun.data_points.forEach((data_point)=> {
+                var timestamp = Date.parse(data_point.timestamp);
+                if (timestamp > (lastTimestamp + (this.config.secondsPerTick * 1000))) {
+                    data.push(data_point.value);
+                    lastTimestamp = timestamp;
+                }
+            });
+        }
 
         return data;
     },

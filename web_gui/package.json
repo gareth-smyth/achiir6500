@@ -1,6 +1,6 @@
 {
   "name": "AchiIr6500_Controller",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "license": "ISC",
   "dependencies": {
     "node-fetch": "^1.3.3",
