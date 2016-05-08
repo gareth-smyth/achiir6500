@@ -1,6 +1,7 @@
 var fs = require('fs');
 
 module.exports = function (grunt) {
+    var rootFolder = new RegExp("(" + process.cwd().replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ")", "g");
     grunt.initConfig({
         browserify: {
             dev: {
@@ -52,14 +53,45 @@ module.exports = function (grunt) {
         jest: {
             options: {
                 config: {
+                    collectCoverage: true,
                     testDirectoryName: "spec",
                     rootDir: ".",
-                    name:"",
+                    name: "",
                     scriptPreprocessor: "<rootDir>/node_modules/babel-jest",
                     unmockedModulePathPatterns: [
                         "<rootDir>/node_modules/react",
                         "<rootDir>/node_modules/react-dom",
                         "<rootDir>/node_modules/react-addons-test-utils"
+                    ]
+                }
+            }
+        },
+
+        "code-coverage-enforcer": {
+            options: {
+                lcovfile: "./coverage/lcov.info",
+                lines: 100,
+                functions: 100,
+                branches: 100,
+                src: "./app",
+                failBuild: false
+            }
+        },
+
+        "string-replace": {
+            dist: {
+                src: './coverage/lcov.info',
+                dest: './coverage/lcov.info',
+                options: {
+                    replacements: [
+                        {
+                            pattern: rootFolder,
+                            replacement: ''
+                        },
+                        {
+                            pattern: /(\\)/g,
+                            replacement: '/'
+                        }
                     ]
                 }
             }
@@ -69,8 +101,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-serve');
+    grunt.loadNpmTasks('grunt-code-coverage-enforcer');
+    grunt.loadNpmTasks('grunt-jest');
+    grunt.loadNpmTasks('grunt-string-replace');
+
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['browserify:dev']);
-    grunt.loadNpmTasks('grunt-jest');
-}
-;
+    grunt.registerTask('test', ['jest', 'string-replace', 'code-coverage-enforcer'])
+};

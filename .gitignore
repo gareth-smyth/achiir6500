@@ -236,3 +236,4 @@ _Pvt_Extensions
 **/*.iml
 **/node_modules
 **/build
+**/coverage
