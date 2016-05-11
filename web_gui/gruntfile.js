@@ -74,6 +74,7 @@ module.exports = function (grunt) {
                 functions: 100,
                 branches: 100,
                 src: "./app",
+                excludes: ['main.js'],
                 failBuild: false
             }
         },
@@ -95,6 +96,41 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+
+        assemblyinfo: {
+            options: {
+                files: ['../src/achiir6500.sln'],
+                info: {
+                    version: '0.4.0',
+                    fileVersion: '0.4.0'
+                }
+            }
+        },
+
+        msbuild: {
+            server: {
+                src: ['../server/server.csproj'],
+                options: {
+                    projectConfiguration: 'Debug',
+                    targets: ['Build'],
+                    stdout: true
+                }
+            },
+            test:{
+                src: ['../server_test/server_test.csproj'],
+                options: {
+                    projectConfiguration: 'Debug',
+                    targets: ['Build'],
+                    stdout: true
+                }
+            }
+        },
+
+        shell: {
+            nunit: {
+                command: 'opencover.console.exe -register:user -target:nunit3-console.exe -targetargs:"../server_test/server_test.csproj"'
+            }
         }
     });
 
@@ -104,8 +140,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-code-coverage-enforcer');
     grunt.loadNpmTasks('grunt-jest');
     grunt.loadNpmTasks('grunt-string-replace');
+    grunt.loadNpmTasks('grunt-dotnet-assembly-info');
+    grunt.loadNpmTasks('grunt-msbuild');
+    grunt.loadNpmTasks('grunt-shell');
 
+    grunt.registerTask('server-build', ['assemblyinfo']);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['browserify:dev']);
-    grunt.registerTask('test', ['jest', 'string-replace', 'code-coverage-enforcer'])
+    grunt.registerTask('jstest', ['jest', 'string-replace', 'code-coverage-enforcer']);
+    grunt.registerTask('test-server', ['msbuild:test', 'shell:nunit']);
 };

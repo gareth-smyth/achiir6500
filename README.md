@@ -19,12 +19,24 @@ communicate with the rework station
 The .NET components have been built using Microsoft Visual Studio Community 2015.  The `achiir6500.sln` file can be
 opened and the build should take care of itself.
 
+You can also run `grunt msbuld:server` from the web_gui folder
+
 **GUI**  
 The web gui has been built using node, npm, grunt, react, chartjs and various other libraries (see package.json). There
 isn't a whole lot in the way of grunt task set up but the basic steps to get the serer up and running are
 * cd web_gui
 * npm install
 * grunt build
+
+#Test
+**Server**
+Nunit can be used to test (tested with nunit3).
+
+You can also run `grunt server-test` from the commandline.
+
+The nunit console and opencover executables have to be on your PATH.
+
+On my system the folders are `C:\Program Files (x86)\NUnit.org\nunit-console`. and `C:\Program Files (x86)\OpenCover`
 
 # Run In Development
 **Server**  

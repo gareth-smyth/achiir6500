@@ -237,3 +237,4 @@ _Pvt_Extensions
 **/node_modules
 **/build
 **/coverage
+**/results.xml
