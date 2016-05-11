@@ -30,13 +30,13 @@ module.exports = React.createClass({
     },
 
     runProgram: function (programId) {
-        if(ProgramService.runProgram(programId)){
+        if (ProgramService.runProgram(programId)) {
             this.state.programRunning = true;
             this.setState(this.state, () => {
-                (function poll(){
-                    var poller = setInterval(function(){
-                        ProgramService.getCurrentProgramRun().then(function(programRun){
-                            if(programRun.finished){
+                (function poll() {
+                    var poller = setInterval(function () {
+                        ProgramService.getCurrentProgramRun().then(function (programRun) {
+                            if (programRun.finished) {
                                 clearInterval(poller);
                                 this.state.programRunning = false;
                             }
@@ -49,7 +49,7 @@ module.exports = React.createClass({
         }
     },
 
-    selectProgram: function(programId){
+    selectProgram: function (programId) {
         this.state.selectedProgram = programId;
         this.setState(this.state);
     },
