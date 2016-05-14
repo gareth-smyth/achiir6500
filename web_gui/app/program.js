@@ -1,35 +1,45 @@
 var React = require('react');
-var ProgramTableComponent = require('./program_table/program_table_component.js');
-var ProgramChart = require('./program_chart.js');
 var ProgramService = require('./program_service.js');
+var { ProgramTableComponent } = require('./program_table/program_table_component.js');
+var ProgramChart = require('./program_chart.js');
 
-module.exports = React.createClass({
-    getInitialState: function () {
-        return {programs: [], selectedProgram: 0, programRunning: false, programRun: {finished:true, data_points:[]} };
-    },
+export class Program extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            programs: [],
+            selectedProgram: 0,
+            programRunning: false,
+            programRun: {finished: true, data_points: []}
+        };
+        this.resetPrograms = this.resetPrograms.bind(this);
+        this.updatePrograms = this.updatePrograms.bind(this);
+        this.selectProgram = this.selectProgram.bind(this);
+        this.runProgram = this.runProgram.bind(this);
+    }
 
-    componentDidMount: function () {
+    componentDidMount() {
         this.resetPrograms();
-    },
+    }
 
-    updatePrograms: function (programs) {
+    updatePrograms(programs){
         this.state.programs = programs;
         this.setState(this.state);
-    },
+    }
 
-    resetPrograms: function () {
+    resetPrograms() {
         ProgramService.get().then(function (programs) {
             this.updatePrograms(programs);
         }.bind(this));
-    },
+    }
 
-    savePrograms: function(programsToSave, programsToDelete){
+    savePrograms(programsToSave, programsToDelete) {
         ProgramService.savePrograms(programsToSave).then(function () {
             ProgramService.deletePrograms(programsToDelete);
         });
-    },
+    }
 
-    runProgram: function (programId) {
+    runProgram(programId) {
         if (ProgramService.runProgram(programId)) {
             this.state.programRunning = true;
             this.setState(this.state, () => {
@@ -47,14 +57,14 @@ module.exports = React.createClass({
                 }.bind(this))();
             })
         }
-    },
+    }
 
-    selectProgram: function (programId) {
+    selectProgram(programId) {
         this.state.selectedProgram = programId;
         this.setState(this.state);
-    },
+    }
 
-    render: function () {
+    render() {
         return <div>
             <ProgramChart
                 programs={this.state.programs}
@@ -72,4 +82,4 @@ module.exports = React.createClass({
             />
         </div>;
     }
-});
+}

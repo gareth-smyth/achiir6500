@@ -39,10 +39,6 @@ module.exports = function (grunt) {
         },
 
         babel: {
-            options: {
-                sourceMap: true,
-                presets: ['babel-preset-es2015', 'babel-preset-react']
-            },
             dist: {
                 files: {
                     'dist/app.js': 'src/app.js'
@@ -57,11 +53,8 @@ module.exports = function (grunt) {
                     testDirectoryName: "spec",
                     rootDir: ".",
                     name: "",
-                    scriptPreprocessor: "<rootDir>/node_modules/babel-jest",
                     unmockedModulePathPatterns: [
-                        "<rootDir>/node_modules/react",
-                        "<rootDir>/node_modules/react-dom",
-                        "<rootDir>/node_modules/react-addons-test-utils"
+                        "node_modules"
                     ]
                 }
             }

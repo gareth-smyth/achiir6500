@@ -3,7 +3,7 @@ jest.unmock("../../app/program_table/program_toolbar");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var TestUtils = require("react-addons-test-utils");
-var ProgramToolbar = require("../../app/program_table/program_toolbar");
+var { ProgramToolbar } = require("../../app/program_table/program_toolbar");
 
 describe("Program Toolbar", () => {
     const ROW_SELECTED = true, PROGRAM_RUNNING = true, HAS_CHANGES = true, SELECTED_PENDING_DELETE = true;

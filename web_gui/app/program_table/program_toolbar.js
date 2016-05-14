@@ -1,7 +1,7 @@
 var React = require("react");
 
-module.exports = React.createClass({
-    render: function () {
+export class ProgramToolbar extends React.Component {
+    render() {
         var programRunningMessage = "Cannot perform any actions while a program is running.";
 
         var cantRunToolTip = this.props.programRunning ? programRunningMessage : (this.props.hasChanges ? "Cannot run any programs until all changes are saved." : this.props.selectedRowQueuedDelete ? "Cannot run program being deleted." : "No program selected to run.");
@@ -16,7 +16,7 @@ module.exports = React.createClass({
         var saveToolTip = "Save all the changes and deletions to the server.";
         var saveDisabled = !this.props.hasChanges || this.props.programRunning;
 
-        var cantResetToolTip =  this.props.programRunning ? programRunningMessage : "No changes to reset.";
+        var cantResetToolTip = this.props.programRunning ? programRunningMessage : "No changes to reset.";
         var resetToolTip = "Reset all changes made that have not been saved.";
         var resetDisabled = !this.props.hasChanges || this.props.programRunning;
 
@@ -25,9 +25,9 @@ module.exports = React.createClass({
         var addProgramDisabled = this.props.programRunning;
 
         return <div>
-            <input className={"btn"}  type="button" value="Run Program"
+            <input className={"btn"} type="button" value="Run Program"
                    disabled={runDisabled} title={runDisabled ? cantRunToolTip : runToolTip}
-                   onClick={this.props.onRun} />
+                   onClick={this.props.onRun}/>
             - -
             <input className={"btn"} type="button" value="Delete Program"
                    disabled={deleteDisabled} title={deleteDisabled ? cantDeleteToolTip : deleteToolTip}
@@ -46,4 +46,4 @@ module.exports = React.createClass({
                    onClick={this.props.onReset}/>
         </div>
     }
-});
+}
