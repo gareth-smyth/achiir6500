@@ -116,6 +116,8 @@ export class ProgramTableComponent extends React.Component {
 
         var newRow = this._programToRow(newProgram);
         newRow.dirty = true;
+        newRow.selected = false;
+        newRow.queueDelete = false;
         this.state.rows.push(newRow);
 
         this.updatePrograms();
@@ -205,6 +207,7 @@ export class ProgramTableComponent extends React.Component {
             if (existingRow && this._rowsMatch(existingRow, updatedRow)) {
                 updatedRow.dirty = existingRow.dirty;
                 updatedRow.queueDelete = existingRow.queueDelete;
+                updatedRow.isSelected = existingRow.isSelected;
             }
             return updatedRow;
         }.bind(this)).filter(function (originalRow) {
@@ -217,7 +220,7 @@ export class ProgramTableComponent extends React.Component {
 
         for (var i = 0; i < aProps.length; i++) {
             var propName = aProps[i];
-
+            
             if (propName != "dirty" && propName != "queueDelete" && propName != "isSelected") {
                 if ("" + rowA[propName] !== "" + rowB[propName]) {
                     return false;
@@ -240,6 +243,7 @@ export class ProgramTableComponent extends React.Component {
             name: program.name,
             loop_counter: program.loop_counter,
             dirty: false,
+            isSelected:false,
             queueDelete: false
         };
 

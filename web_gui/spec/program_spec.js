@@ -93,6 +93,12 @@ describe("Program", () => {
         expect(programComponent.state.programRun).toEqual({finished: true});
     });
     
+    it("updates the selected program state when callback called", function(){
+        let programComponent = TestUtils.renderIntoDocument(<Program/>);
+        programComponent.selectProgram(1234);
+        expect(programComponent.state.selectedProgram).toEqual(1234);
+    });
+    
     describe("Callbacks", function () {
         it("creates a ProgramChart component", function () {
             let programComponent = TestUtils.renderIntoDocument(<Program/>);
