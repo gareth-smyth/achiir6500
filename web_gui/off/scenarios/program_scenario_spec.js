@@ -33,16 +33,19 @@ describe("Program Toolbar", () => {
                 resolve([]);
             });
         });
+        
         ProgramService.savePrograms = jest.genMockFunction().mockImplementation(function(){
             return new Promise(function (resolve, reject) {
                 resolve();
             });
         });
+        
         ProgramService.deletePrograms = jest.genMockFunction().mockImplementation(function(){
             return new Promise(function (resolve, reject) {
                 resolve();
             });
         });
+        
         this.loadComponent = function() {
             this.programComponent = TestUtils.renderIntoDocument(
                 <Program/>

@@ -9,13 +9,12 @@ export class ProgramTableComponent extends React.Component {
         super(props);
         this.state = {rows: [], selectedRow: null, hasChanges: false, programRunning: false};
         
-        this.columns = this.buildColumnDefinitions();
+        this.columns = this._buildColumnDefinitions();
         
         this.addProgram = this.addProgram.bind(this);
         this.getRowAt = this.getRowAt.bind(this);
         this.saveAllPrograms = this.saveAllPrograms.bind(this);
         this.onRowSelect = this.onRowSelect.bind(this);
-        this.deleteProgram = this.deleteProgram.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -42,21 +41,15 @@ export class ProgramTableComponent extends React.Component {
         var rows = this.state.rows;
         Object.assign(rows[e.rowIdx], e.updated);
         rows[e.rowIdx].dirty = true;
+        rows[e.rowIdx].queueDelete = false;
 
-        this.updatePrograms();
+        this._updatePrograms();
     }
 
     // Other!!!
     runProgram() {
         var selectedRow = this.state.selectedRow;
         this.props.onRun(selectedRow.id);
-    }
-
-    fullyDeleteRow(row) {
-        var selectedIndex = this.state.rows.indexOf(row);
-        if (selectedIndex != -1) {
-            this.state.rows.splice(selectedIndex, 1);
-        }
     }
 
     saveAllPrograms() {
@@ -71,7 +64,7 @@ export class ProgramTableComponent extends React.Component {
             row.dirty = false;
         });
         deletingRows.forEach(row => {
-            this.fullyDeleteRow(row)
+            this._fullyDeleteRow(row)
         });
 
         this._updateState(this.state);
@@ -88,13 +81,6 @@ export class ProgramTableComponent extends React.Component {
         return this.state.rows.find(function (row) {
             return row.id == rowId;
         });
-    }
-
-    updatePrograms() {
-        var rows = this.state.rows;
-        this.props.onProgramsChanged(rows.map(function (row) {
-            return this._rowToProgram(row);
-        }.bind(this)));
     }
 
     addProgram() {
@@ -120,7 +106,7 @@ export class ProgramTableComponent extends React.Component {
         newRow.queueDelete = false;
         this.state.rows.push(newRow);
 
-        this.updatePrograms();
+        this._updatePrograms();
     }
 
     render() {
@@ -153,7 +139,19 @@ export class ProgramTableComponent extends React.Component {
     }
 
     // Everything below here is to be considered private
-    buildColumnDefinitions() {
+    _fullyDeleteRow(row) {
+        var selectedIndex = this.state.rows.indexOf(row);
+        this.state.rows.splice(selectedIndex, 1);
+    }
+
+    _updatePrograms() {
+        var rows = this.state.rows;
+        this.props.onProgramsChanged(rows.map(function (row) {
+            return this._rowToProgram(row);
+        }.bind(this)));
+    }
+
+    _buildColumnDefinitions() {
         let step_headings = ["Ramp", "Level", "Dwell"];
         let columns = [
             {
