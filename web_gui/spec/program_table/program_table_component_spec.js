@@ -375,6 +375,27 @@ describe("Program Table", () => {
         let programChart = TestUtils.findRenderedComponentWithType(programTable, ProgramToolbar);
         expect(programChart.props.selectedRowQueuedDelete).toBe(true);
     });
+    
+    it("resets all programs to their original values when resetAllEvent occurs", function(){
+        let node = document.createElement('div');
+        let programTable = ReactDOM.render(<ProgramTableComponent
+            programs={[program(1), program(2), program(3)]} onReset={()=>{}}/>, node);
+        ReactDOM.render(<ProgramTableComponent
+            programs={[program(1), program(2), program(3)]} onReset={()=>{}}/>, node);
+
+        programTable.getRow('1').dirty = true;
+        programTable.getRow('2').isSelected = true;
+        programTable.getRow('3').queueDelete = true;
+
+        programTable.resetAllPrograms();
+        ReactDOM.render(<ProgramTableComponent
+            programs={[program(1), program(2), program(3), program(4)]} onReset={()=>{}}/>, node);
+
+        expect(programTable.getRow('1').dirty).toEqual(false);
+        expect(programTable.getRow('2').isSelected).toEqual(true);
+        expect(programTable.getRow('3').queueDelete).toEqual(false);
+        expect(programTable.getRow('4')).not.toEqual(null);
+    });
 
     function program(id) {
         let idsq = id * id;
