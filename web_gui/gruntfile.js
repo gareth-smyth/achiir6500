@@ -47,15 +47,29 @@ module.exports = function (grunt) {
         },
 
         jest: {
-            options: {
-                config: {
-                    collectCoverage: true,
-                    testDirectoryName: "spec",
-                    rootDir: ".",
-                    name: "",
-                    unmockedModulePathPatterns: [
-                        "node_modules"
-                    ]
+            unit: {
+                options: {
+                    config: {
+                        collectCoverage: true,
+                        testDirectoryName: "spec",
+                        rootDir: ".",
+                        name: "",
+                        unmockedModulePathPatterns: [
+                            "node_modules"
+                        ]
+                    }
+                }
+            },
+            scenario: {
+                options: {
+                    config: {
+                        testDirectoryName: "scenario_spec",
+                        rootDir: ".",
+                        name: "",
+                        unmockedModulePathPatterns: [
+                            "node_modules"
+                        ]
+                    }
                 }
             }
         },
@@ -140,6 +154,8 @@ module.exports = function (grunt) {
     grunt.registerTask('server-build', ['assemblyinfo']);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['browserify:dev']);
-    grunt.registerTask('jstest', ['jest', 'string-replace', 'code-coverage-enforcer']);
+    grunt.registerTask('jstest', ['jest:unit', 'string-replace', 'code-coverage-enforcer']);
     grunt.registerTask('test-server', ['msbuild:test', 'shell:nunit']);
+    grunt.registerTask('test', ['test-server', 'jstest', 'jest:scenario']);
+    grunt.registerTask('js-scenario', ['jest:scenario']);
 };

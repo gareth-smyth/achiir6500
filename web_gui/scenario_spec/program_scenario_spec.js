@@ -1,7 +1,7 @@
-jest.unmock("../../app/program_table/program_table_component");
-jest.unmock("../../app/program_table/program_toolbar");
-jest.unmock("../../app/program_table/program_table_row_renderer");
-jest.unmock("../../app/program");
+jest.unmock("../app/program_table/program_table_component");
+jest.unmock("../app/program_table/program_toolbar");
+jest.unmock("../app/program_table/program_table_row_renderer");
+jest.unmock("../app/program");
 jest.unmock("react-data-grid/addons");
 jest.unmock("promise");
 jest.unmock("uuid-js");
@@ -9,8 +9,8 @@ jest.unmock("uuid-js");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var TestUtils = require("react-addons-test-utils");
-var {Program} = require("../../app/program");
-var ProgramService = require("../../app/program_service");
+var {Program} = require("../app/program");
+var ProgramService = require("../app/program_service");
 var Promise = require("promise");
 
 describe("Program Toolbar", () => {

@@ -8,13 +8,17 @@ export class ProgramTableComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {rows: [], selectedRow: null, hasChanges: false, programRunning: false};
-        
+
         this.columns = this._buildColumnDefinitions();
-        
+
         this.addProgram = this.addProgram.bind(this);
         this.getRowAt = this.getRowAt.bind(this);
         this.saveAllPrograms = this.saveAllPrograms.bind(this);
+        this.resetAllPrograms = this.resetAllPrograms.bind(this);
         this.onRowSelect = this.onRowSelect.bind(this);
+        this.runProgram = this.runProgram.bind(this);
+        this.deleteProgram = this.deleteProgram.bind(this);
+        this.onRowUpdated = this.onRowUpdated.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -54,12 +58,12 @@ export class ProgramTableComponent extends React.Component {
 
     saveAllPrograms() {
         var dirtyRows = this.state.rows.filter(row => row.dirty);
-        var dirtyPrograms = dirtyRows.map(row => this._rowToProgram(row));
+        var dirtyPrograms = dirtyRows.map(row => ProgramTableComponent._rowToProgram(row));
         var deletingRows = this.state.rows.filter(row => row.queueDelete);
-        var deletingPrograms = deletingRows.map(row => this._rowToProgram(row));
+        var deletingPrograms = deletingRows.map(row => ProgramTableComponent._rowToProgram(row));
 
         this.props.onSave(dirtyPrograms, deletingPrograms);
-
+        
         dirtyRows.forEach(row => {
             row.dirty = false;
         });
@@ -68,6 +72,17 @@ export class ProgramTableComponent extends React.Component {
         });
 
         this._updateState(this.state);
+        this._updatePrograms();
+    }
+
+    resetAllPrograms() {
+        this.state.rows.forEach(row => {
+            row.dirty = false;
+            row.queueDelete = false;
+        });
+        this._updateState(this.state, null, null, ()=> {
+            this.props.onReset()
+        });
     }
 
     deleteProgram() {
@@ -102,7 +117,7 @@ export class ProgramTableComponent extends React.Component {
 
         var newRow = this._programToRow(newProgram);
         newRow.dirty = true;
-        newRow.selected = false;
+        newRow.isSelected = false;
         newRow.queueDelete = false;
         this.state.rows.push(newRow);
 
@@ -114,7 +129,7 @@ export class ProgramTableComponent extends React.Component {
             <ProgramToolbar
                 onRun={this.runProgram}
                 onSaveAll={this.saveAllPrograms}
-                onReset={this.props.onReset}
+                onReset={this.resetAllPrograms}
                 onAddProgram={this.addProgram}
                 onDeleteSelected={this.deleteProgram}
                 hasChanges={this.state.hasChanges}
@@ -147,7 +162,7 @@ export class ProgramTableComponent extends React.Component {
     _updatePrograms() {
         var rows = this.state.rows;
         this.props.onProgramsChanged(rows.map(function (row) {
-            return this._rowToProgram(row);
+            return ProgramTableComponent._rowToProgram(row);
         }.bind(this)));
     }
 
@@ -181,7 +196,7 @@ export class ProgramTableComponent extends React.Component {
         }
         return columns;
     }
-    
+
     // Handling state
     _updateState(currentState, rows = null, selectedRow = null, callback = null, programRunning = null) {
         var newRows = rows ? rows : currentState.rows;
@@ -197,12 +212,12 @@ export class ProgramTableComponent extends React.Component {
             },
             callback);
     }
-    
+
     // Handling rows
     _mergeRowChanges(mergeIntoRows, fromRows) {
         return fromRows.map(function (updatedRow) {
             var existingRow = mergeIntoRows.find(existingRow => existingRow.id == updatedRow.id);
-            if (existingRow && this._rowsMatch(existingRow, updatedRow)) {
+            if (existingRow && ProgramTableComponent._rowsMatch(existingRow, updatedRow)) {
                 updatedRow.dirty = existingRow.dirty;
                 updatedRow.queueDelete = existingRow.queueDelete;
                 updatedRow.isSelected = existingRow.isSelected;
@@ -213,12 +228,12 @@ export class ProgramTableComponent extends React.Component {
         });
     }
 
-    _rowsMatch(rowA, rowB) {
+    static _rowsMatch(rowA, rowB) {
         var aProps = Object.getOwnPropertyNames(rowA);
 
         for (var i = 0; i < aProps.length; i++) {
             var propName = aProps[i];
-            
+
             if (propName != "dirty" && propName != "queueDelete" && propName != "isSelected") {
                 if ("" + rowA[propName] !== "" + rowB[propName]) {
                     return false;
@@ -241,7 +256,7 @@ export class ProgramTableComponent extends React.Component {
             name: program.name,
             loop_counter: program.loop_counter,
             dirty: false,
-            isSelected:false,
+            isSelected: false,
             queueDelete: false
         };
 
@@ -255,7 +270,7 @@ export class ProgramTableComponent extends React.Component {
         return program_row;
     }
 
-    _rowToProgram(row) {
+    static _rowToProgram(row) {
         var steps = [];
         for (var step_num = 1; step_num < 9; step_num++) {
             steps.push({

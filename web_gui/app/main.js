@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Program = require('./program.js');
+var { Program } = require('./program.js');
 var Alert = require('react-s-alert').default;
 require('./styles.css');
 

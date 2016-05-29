@@ -34,7 +34,7 @@ export class Program extends React.Component {
     }
 
     savePrograms(programsToSave, programsToDelete) {
-        ProgramService.savePrograms(programsToSave).then(function () {
+        return ProgramService.savePrograms(programsToSave).then(function () {
             ProgramService.deletePrograms(programsToDelete);
         });
     }

@@ -222,10 +222,10 @@ describe("Program Table", () => {
         };
         let programTable = ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
         ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
 
         programTable.state.rows[0].dirty = true;
         programTable.state.rows[1].queueDelete = true;
@@ -251,10 +251,10 @@ describe("Program Table", () => {
         };
         let programTable = ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
         ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
 
         programTable.state.rows[0].dirty = true;
         programTable.state.rows[1].queueDelete = true;
@@ -277,10 +277,10 @@ describe("Program Table", () => {
         };
         let programTable = ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
         ReactDOM.render(
             <ProgramTableComponent programs={[program(1), program(2), program(3), program(4)]}
-                                   onSave={savePrograms}/>, node);
+                                   onSave={savePrograms} onProgramsChanged={()=>{}}/>, node);
 
         programTable.state.rows[0].dirty = true;
         programTable.state.rows[1].queueDelete = true;

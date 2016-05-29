@@ -25,7 +25,7 @@
     "grunt-code-coverage-enforcer": "^2.0.0-rc.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-dotnet-assembly-info": "^1.0.19",
-    "grunt-jest": "^0.2.0",
+    "grunt-jest": "gareth-smyth/grunt-jest",
     "grunt-msbuild": "^0.3.7",
     "grunt-nunit-runner": "^2.0.5",
     "grunt-serve": "^0.1.6",
