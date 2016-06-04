@@ -6,7 +6,7 @@ var ReactDOM = require("react-dom");
 var ProgramService = require("../app/program_service");
 var TestUtils = require("react-addons-test-utils");
 var {Program} = require("../app/program");
-var ProgramChart = require("../app/program_chart");
+var {ProgramChart} = require("../app/program_chart");
 var { ProgramTableComponent }= require("../app/program_table/program_table_component");
 
 describe("Program", () => {

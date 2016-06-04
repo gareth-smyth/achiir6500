@@ -2,22 +2,32 @@ var React = require('react');
 var Sparklines = require('react-sparklines').Sparklines;
 var SparklinesLine = require('react-sparklines').SparklinesLine;
 
-module.exports = React.createClass({
-    config: {
-        secondsPerTick: 1
-    },
+export class ProgramChart extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            chartData: [],
+            runData: []
+        };
+
+        this.config = {secondsPerTick: 1};
+
+        this.generateChartDataForProgram = this.generateChartDataForProgram.bind(this);
+        this.generateChartDataForRun = this.generateChartDataForRun.bind(this);
+    }
 
     // Conversions between programs and chart data
-    generateChartDataForProgram: function (program) {
+    generateChartDataForProgram(program) {
         var data = [];
 
         var stepStartingTemp = 0;
+        data.push(stepStartingTemp);
         program.steps.forEach((currentStep, index) => {
             var tempDifference = currentStep.level - stepStartingTemp;
 
             var timeToLevel = (tempDifference / currentStep.ramp);
 
-            for (var rampSecondsPassed = 0; rampSecondsPassed < timeToLevel; rampSecondsPassed += this.config.secondsPerTick) {
+            for (var rampSecondsPassed = 1; rampSecondsPassed <= timeToLevel; rampSecondsPassed += this.config.secondsPerTick) {
                 var temperature = stepStartingTemp + (rampSecondsPassed * (tempDifference / timeToLevel));
                 data.push(temperature);
             }
@@ -30,13 +40,13 @@ module.exports = React.createClass({
         });
 
         return data;
-    },
+    }
 
-    generateChartDataForRun: function (programRun) {
+    generateChartDataForRun(programRun) {
         var data = [];
 
         var lastTimestamp = new Date(0).getTime();
-        if(programRun.data_points) {
+        if (programRun.data_points) {
             programRun.data_points.forEach((data_point)=> {
                 var timestamp = Date.parse(data_point.timestamp);
                 if (timestamp > (lastTimestamp + (this.config.secondsPerTick * 1000))) {
@@ -47,16 +57,10 @@ module.exports = React.createClass({
         }
 
         return data;
-    },
+    }
 
     // Component methods
-    getInitialState: function () {
-        return {
-            chartData: []
-        };
-    },
-
-    componentWillReceiveProps: function (nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.programs.length > 0) {
             var selectedIndex = nextProps.programs.findIndex(function (program) {
                 return nextProps.selectedProgram === program.id;
@@ -66,9 +70,9 @@ module.exports = React.createClass({
             this.state.runData = this.generateChartDataForRun(nextProps.programRun);
             this.setState(this.state);
         }
-    },
+    }
 
-    render: function () {
+    render() {
         return (<div className={"chartdiv"}>
             <Sparklines data={this.state.chartData} containerWidth={"100%"} containerHeight={"50%"}
                         width={300} height={100} margin={5} preserveAspectRatio={"none"}>
@@ -82,4 +86,4 @@ module.exports = React.createClass({
             </Sparklines>
         </div>);
     }
-});
+}

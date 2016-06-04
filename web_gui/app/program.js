@@ -1,7 +1,7 @@
 var React = require('react');
 var ProgramService = require('./program_service.js');
-var { ProgramTableComponent } = require('./program_table/program_table_component.js');
-var ProgramChart = require('./program_chart.js');
+var {ProgramTableComponent} = require('./program_table/program_table_component.js');
+var {ProgramChart} = require('./program_chart.js');
 
 export class Program extends React.Component {
     constructor(props) {
@@ -22,7 +22,7 @@ export class Program extends React.Component {
         this.resetPrograms();
     }
 
-    updatePrograms(programs){
+    updatePrograms(programs) {
         this.state.programs = programs;
         this.setState(this.state);
     }
