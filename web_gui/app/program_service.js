@@ -1,4 +1,4 @@
-var fetch = require("node-fetch");
+require("whatwg-fetch");
 var Alert = require('react-s-alert').default;
 
 module.exports = class ProgramService {
@@ -8,13 +8,12 @@ module.exports = class ProgramService {
                 return response.json();
             } else {
                 Alert.error("Could not get the list of programs from the server.  See the log for details.");
-                console.log("Error getting programs: Status:" + response.status + " Body:" + response.body.text());
+                console.log("Error getting programs: Status:", response.status, response.text());
                 return [];
             }
         }).catch(function (error) {
             Alert.error("Could not get the list of programs from the server.  See the log for details.");
-            console.log("Error getting programs: Error:");
-            console.log(error);
+            console.log("Error getting programs: Error:", error);
             return [];
         });
     }
@@ -25,13 +24,12 @@ module.exports = class ProgramService {
                 return response.json();
             } else {
                 Alert.error("Error returned from server during run.  See the log for details.");
-                console.log("Error getting program run: Status:" + status + " Body:" + response.body.text());
+                console.log("Error getting program run: Status:", response.status, response.text());
                 return {finished: true};
             }
         }).catch(function (error) {
             Alert.error("Error returned from server during run.  See the log for details.");
-            console.log("Error getting program run: Error:");
-            console.log(error);
+            console.log("Error getting program run: Error:", error);
             return {finished: true};
         });
     }
@@ -42,7 +40,7 @@ module.exports = class ProgramService {
                 return true;
             } else {
                 Alert.error("Error returned from server when running program.  See the log for details.");
-                console.log("Error running program: Status:" + status + " Body:" + response.body.text());
+                console.log("Error running program: Status:", response.status, response.text());
                 return false;
             }
         }).catch(function (error) {
@@ -66,7 +64,7 @@ module.exports = class ProgramService {
                 console.log("Saved programs:" + JSON.stringify(programs));
             } else {
                 Alert.error("Error returned from server when saving programs.  See the log for details.");
-                console.log("Error saving programs: Status:" + status + " Body:" + response.body.text());
+                console.log("Error saving programs: Status:", response.status, response.text());
             }
         }).catch(function (error) {
             Alert.error("Error returned from server when saving programs.  See the log for details.");
@@ -88,7 +86,7 @@ module.exports = class ProgramService {
                 console.log("Deleted programs:" + JSON.stringify(programs));
             } else {
                 Alert.error("Error returned from server when deleting programs.  See the log for details.");
-                console.log("Error deleting programs: Status:" + status + " Body:" + response.body.text());
+                console.log("Error deleting programs: Status:", response.status, response.text());
             }
         }).catch(function (error) {
             Alert.error("Error returned from server when deleting programs.  See the log for details.");

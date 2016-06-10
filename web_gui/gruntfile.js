@@ -81,6 +81,7 @@ module.exports = function (grunt) {
                 functions: 100,
                 branches: 100,
                 src: "./app",
+                includes: ["(.*?)"],
                 excludes: ['main.js'],
                 failBuild: false
             }
