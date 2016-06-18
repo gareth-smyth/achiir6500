@@ -83,7 +83,7 @@ module.exports = function (grunt) {
                 src: "./app",
                 includes: ["(.*?)"],
                 excludes: ['main.js'],
-                failBuild: false
+                failBuild: true
             }
         },
 
@@ -137,7 +137,10 @@ module.exports = function (grunt) {
 
         shell: {
             nunit: {
-                command: 'opencover.console.exe -register:user -target:nunit3-console.exe -targetargs:"../server_test/server_test.csproj"'
+                command: 'opencover.console.exe -register:user -target:nunit3-console.exe -targetargs:"../server_test/server_test.csproj" -filter:"+[*]* -[server_mock]* -[server_test]*"'
+            },
+            "coverage-report":{
+                command: '..\\packages\\ReportGenerator.2.4.5.0\\tools\\ReportGenerator.exe -reports:results.xml -targetdir:coverage server-coverage >nul'
             }
         }
     });
@@ -156,7 +159,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['browserify:dev']);
     grunt.registerTask('jstest', ['jest:unit', 'string-replace', 'code-coverage-enforcer']);
-    grunt.registerTask('test-server', ['msbuild:test', 'shell:nunit']);
+    grunt.registerTask('test-server', ['shell:nunit', 'shell:coverage-report']);
     grunt.registerTask('test', ['test-server', 'jstest', 'jest:scenario']);
     grunt.registerTask('js-scenario', ['jest:scenario']);
 };
