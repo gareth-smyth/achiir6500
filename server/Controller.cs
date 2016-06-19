@@ -62,7 +62,7 @@ namespace achiir6500.server
                 {
                     return JObject.FromObject(pc900ProgramRuns[0]).ToString();
                 }
-                return JObject.FromObject(new Pc900ProgramRun("1234"));
+                return JObject.FromObject(new Pc900ProgramRun("1234", false)).ToString();
             };
         }
     }

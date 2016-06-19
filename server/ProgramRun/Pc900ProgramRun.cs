@@ -12,11 +12,16 @@ namespace achiir6500.server
         public int initial_point = 1;
         public bool finished = false;
 
-        public Pc900ProgramRun(string programId)
+        public Pc900ProgramRun(string programId, bool running)
         {
             id = Guid.NewGuid().ToString();
             program_id = programId;
             data_points = new List<Pc900ProgramRunDataPoint>();
+            finished = !running;
+        }
+
+        public Pc900ProgramRun(string programId) : this(programId, false)
+        {
         }
 
         public void AddDataPoint(int value)

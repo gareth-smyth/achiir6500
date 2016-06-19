@@ -82,7 +82,7 @@ namespace achiir6500.server_test
             var responseBody = response.Content.ReadAsStringAsync().Result;
             Assert.That(response.IsSuccessStatusCode, Is.True);
             Assert.That(responseBody, Contains.Substring(@"""program_id"": ""new_id"""));
-            Assert.That(responseBody, Contains.Substring(@"""id"": "));
+            Assert.That(responseBody, Contains.Substring(@"""id"": """));
         }
 
         [Test]
@@ -120,6 +120,15 @@ namespace achiir6500.server_test
         {
             StartProgram();
             Thread.Sleep(5000);
+            var httpResponseMessage = _client.GetAsync("/current-run").Result;
+            var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
+
+            Assert.That(results.finished.Value, Is.True);
+        }
+
+        [Test]
+        public void ShouldReturnValidEmptyProgramRunWhenNoProgramRunning()
+        {
             var httpResponseMessage = _client.GetAsync("/current-run").Result;
             var results = JsonConvert.DeserializeObject<dynamic>(httpResponseMessage.Content.ReadAsStringAsync().Result);
 
