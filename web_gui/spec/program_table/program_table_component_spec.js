@@ -146,6 +146,28 @@ describe("Program Table", () => {
         expect(programsUpdated[0].steps[0]).toEqual({ramp: 5, level: 6, dwell: 7});
     });
 
+    it("converts all to strings to numbers in the updated program data", function () {
+        let node = document.createElement('div');
+        var programsUpdated = [];
+        let updateProgram = (programs) => {
+            programsUpdated = programs;
+        };
+        let programTable = ReactDOM.render(
+            <ProgramTableComponent programs={[program(1)]}
+                                   onProgramsChanged={updateProgram}/>, node);
+        ReactDOM.render(
+            <ProgramTableComponent
+                programs={[program(1)]}
+                onProgramsChanged={updateProgram}/>, node);
+
+        programTable.onRowUpdated({
+            rowIdx: 0,
+            updated: {id: '1', name: 'hello', loop_counter: 123, Ramp1: "5", Level1: "6", Dwell1: "7"}
+        });
+        
+        expect(programsUpdated[0].steps[0]).toEqual({ramp: 5, level: 6, dwell: 7});
+    });
+
     it("sets the row to dirty when a row is changed", function () {
         let node = document.createElement('div');
         var programsUpdated;

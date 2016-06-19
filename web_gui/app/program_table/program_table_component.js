@@ -274,9 +274,9 @@ export class ProgramTableComponent extends React.Component {
         var steps = [];
         for (var step_num = 1; step_num < 9; step_num++) {
             steps.push({
-                ramp: row['Ramp' + step_num],
-                level: row['Level' + step_num],
-                dwell: row['Dwell' + step_num]
+                ramp: parseFloat(row['Ramp' + step_num]),
+                level: parseFloat(row['Level' + step_num]),
+                dwell: parseFloat(row['Dwell' + step_num])
             });
         }
 
