@@ -140,6 +140,14 @@ module.exports = function (grunt) {
                     targets: ['Build'],
                     stdout: true
                 }
+            },
+            'server-mock': {
+                src: ['../server_mock/server_mock.csproj'],
+                options: {
+                    projectConfiguration: 'Debug',
+                    targets: ['Build'],
+                    stdout: true
+                }
             }
         },
 
@@ -149,6 +157,9 @@ module.exports = function (grunt) {
             },
             "coverage-report":{
                 command: '..\\packages\\ReportGenerator.2.4.5.0\\tools\\ReportGenerator.exe -reports:results.xml -targetdir:coverage server-coverage >nul'
+            },
+            "server-mock":{
+                command: '..\\server_mock\\bin\\Debug\\server_mock.exe'
             }
         }
     });
@@ -171,4 +182,5 @@ module.exports = function (grunt) {
     grunt.registerTask('test-server', ['shell:nunit', 'shell:coverage-report']);
     grunt.registerTask('test', ['test-server', 'jstest', 'jest:scenario']);
     grunt.registerTask('js-scenario', ['jest:scenario']);
+    grunt.registerTask('server-mock', ['msbuild:server-mock', 'shell:server-mock'])
 };
