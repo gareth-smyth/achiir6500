@@ -40,6 +40,11 @@ On my system the folders are `C:\Program Files (x86)\NUnit.org\nunit-console`. a
 
 # Run In Development
 **Server**  
+From grunt
+* cd web_gui
+* grunt server-mock
+
+From visual studio
 * Run the server_mock project for test isolated from the rework station
 * Run the server project to test against an actual instance of the rework station exposed on COM1  
 
@@ -55,6 +60,7 @@ The front end should then be visible from http://localhost:9000/index.html
 ![achiir6500](https://cloud.githubusercontent.com/assets/6697040/14029172/8d200044-f1f8-11e5-88aa-75863bff3aac.PNG)
 
 # Deployment
-Perform a release build of the server project in visual studio - this will copy all of the required files (server and
-front end) to the content folder in root.  This is a  little flaky at the minute and executes npm install so needs an
-internet connection.  If it fails, try it again.
+* cd web_gui
+* grunt release
+
+This will build the server and the front-end, and copy it to the "release" folder in the root folder.
