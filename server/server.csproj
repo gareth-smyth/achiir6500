@@ -139,11 +139,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
- cd $(SolutionDir)web_gui\
-  copy $(SolutionDir)web_gui\package.json $(TargetDir)content\
-  echo copying content
-  xcopy /E /R /Y $(SolutionDir)web_gui\build $(TargetDir)content\build\
-  copy $(SolutionDir)web_gui\index.html $(TargetDir)content\index.html
+ xcopy /E /R /Y $(ProjectDir)..\web_gui\build $(TargetDir)content\build\ 
+ copy $(ProjectDir)..\web_gui\index.html $(TargetDir)content\index.html 
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

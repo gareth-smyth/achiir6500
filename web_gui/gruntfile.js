@@ -132,6 +132,14 @@ module.exports = function (grunt) {
                     targets: ['Build'],
                     stdout: true
                 }
+            },
+            release: {
+                src: ['../server/server.csproj'],
+                options: {
+                    projectConfiguration: 'Release',
+                    targets: ['Build'],
+                    stdout: true
+                }
             }
         },
 
@@ -158,6 +166,7 @@ module.exports = function (grunt) {
     grunt.registerTask('server-build', ['assemblyinfo']);
     grunt.registerTask('default', ['watch']);
     grunt.registerTask('build', ['browserify:dev']);
+    grunt.registerTask('release', ['browserify:dev', 'msbuild:release']);
     grunt.registerTask('jstest', ['jest:unit', 'string-replace', 'code-coverage-enforcer']);
     grunt.registerTask('test-server', ['shell:nunit', 'shell:coverage-report']);
     grunt.registerTask('test', ['test-server', 'jstest', 'jest:scenario']);
